@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0d1714" />
   <title>Bor u Tachova</title>
-
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css" />
 
   <style>
@@ -18,12 +17,8 @@
       font-family:Arial,Helvetica,sans-serif;
       background:#0d1714;
     }
-
     #map{ position:fixed; inset:0; }
-
-    .maplibregl-canvas{
-      transition:filter .45s ease;
-    }
+    .maplibregl-canvas{ transition:filter .45s ease; }
 
     .fx-overlay{
       position:fixed;
@@ -35,25 +30,20 @@
     }
 
     body.mode-comic .maplibregl-canvas{
-      filter:saturate(1.38) contrast(1.16) brightness(1.04) sepia(.08);
+      filter:saturate(1.62) contrast(1.22) brightness(1.06) sepia(.05);
     }
-
     body.mode-comic .fx-overlay{
-      opacity:.25;
+      opacity:.30;
       background:
-        radial-gradient(circle, rgba(0,0,0,.28) 0 1px, transparent 1.2px) 0 0/5px 5px,
-        linear-gradient(180deg, rgba(255,232,166,.10), rgba(0,0,0,.03));
+        radial-gradient(circle, rgba(0,0,0,.30) 0 1px, transparent 1.25px) 0 0/5px 5px,
+        linear-gradient(180deg, rgba(255,226,130,.08), rgba(0,0,0,.03));
       mix-blend-mode:multiply;
     }
 
-    body.mode-cyberpunk{
-      background:#05030b;
-    }
-
+    body.mode-cyberpunk{ background:#05030b; }
     body.mode-cyberpunk .maplibregl-canvas{
-      filter:brightness(.62) contrast(1.42) saturate(2.15) hue-rotate(168deg);
+      filter:brightness(.61) contrast(1.48) saturate(2.25) hue-rotate(168deg);
     }
-
     body.mode-cyberpunk .fx-overlay{
       opacity:1;
       background:
@@ -73,9 +63,8 @@
       flex-direction:column;
       align-items:center;
       gap:10px;
-      width:min(92vw, 620px);
+      width:min(92vw, 650px);
     }
-
     .top-note{
       padding:9px 16px;
       border-radius:999px;
@@ -90,25 +79,23 @@
       text-shadow:0 2px 14px rgba(0,0,0,.5);
       white-space:nowrap;
     }
-
     .mode-switch{
       display:grid;
       grid-template-columns:repeat(3, 1fr);
-      width:min(92vw, 470px);
+      width:min(92vw, 500px);
       padding:4px;
       border-radius:18px;
-      background:rgba(4,8,9,.78);
+      background:rgba(4,8,9,.80);
       border:1px solid rgba(255,255,255,.20);
       backdrop-filter:blur(14px);
       -webkit-backdrop-filter:blur(14px);
       box-shadow:0 10px 35px rgba(0,0,0,.28);
     }
-
     .mode-btn{
       appearance:none;
       border:0;
       border-radius:14px;
-      padding:10px 14px;
+      padding:11px 14px;
       color:rgba(255,255,255,.78);
       background:transparent;
       font-weight:800;
@@ -117,37 +104,33 @@
       cursor:pointer;
       transition:all .25s ease;
     }
-
     .mode-btn:hover{ color:#fff; }
-
     .mode-btn.active{
       color:#111;
       background:#fff;
       box-shadow:0 5px 18px rgba(0,0,0,.26);
     }
-
     body.mode-comic .mode-btn[data-mode="comic"].active{
       color:#171100;
       background:#ffd738;
-      box-shadow:0 0 20px rgba(255,215,56,.30);
+      box-shadow:0 0 22px rgba(255,215,56,.38);
     }
-
     body.mode-cyberpunk .mode-btn[data-mode="cyberpunk"].active{
       color:#fff;
       background:linear-gradient(135deg,#00d9ff,#d900ff 68%);
       box-shadow:0 0 24px rgba(217,0,255,.42);
     }
 
-    .maplibregl-ctrl-top-right{ top:116px; }
+    .maplibregl-ctrl-top-right{ top:118px; }
     .maplibregl-ctrl-bottom-left,
     .maplibregl-ctrl-bottom-right{ z-index:7; }
 
     @media(max-width:620px){
       .top-ui{ top:10px; gap:7px; }
       .top-note{ font-size:11px; padding:8px 12px; }
-      .mode-switch{ width:min(94vw, 390px); }
+      .mode-switch{ width:min(94vw, 400px); }
       .mode-btn{ font-size:10px; padding:9px 8px; }
-      .maplibregl-ctrl-top-right{ top:105px; }
+      .maplibregl-ctrl-top-right{ top:106px; }
     }
   </style>
 </head>
@@ -170,16 +153,17 @@
 
     const BOR = [12.7752, 49.7117];
     let currentMode = 'normal';
+    const originalLabels = new Map();
 
     const map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://tiles.openfreemap.org/styles/bright',
-      center: BOR,
-      zoom: 12.25,
-      pitch: 52,
-      bearing: -18,
-      canvasContextAttributes: { antialias: true },
-      attributionControl: true
+      container:'map',
+      style:'https://tiles.openfreemap.org/styles/bright',
+      center:BOR,
+      zoom:12.25,
+      pitch:52,
+      bearing:-18,
+      canvasContextAttributes:{ antialias:true },
+      attributionControl:true
     });
 
     map.addControl(new maplibregl.NavigationControl({
@@ -187,39 +171,99 @@
       showCompass:true
     }), 'top-right');
 
-    function setBuildingLook(mode){
-      if (!map.getLayer('bor-3d-buildings')) return;
+    const buildingColorComic = [
+      'match',
+      ['%', ['to-number', ['coalesce', ['id'], 0]], 7],
+      0,'#ffd166',
+      1,'#f4978e',
+      2,'#90dbf4',
+      3,'#b8f2a1',
+      4,'#f6bd60',
+      5,'#cdb4db',
+      6,'#ffadad',
+      '#f3dfb1'
+    ];
 
-      if (mode === 'comic'){
+    function safeSetPaint(layer, prop, value){
+      try{ map.setPaintProperty(layer, prop, value); }catch(e){}
+    }
+
+    function rememberLabels(){
+      for(const layer of map.getStyle().layers){
+        if(layer.type === 'symbol' && layer.layout && layer.layout['text-field']){
+          originalLabels.set(layer.id, {
+            color:map.getPaintProperty(layer.id,'text-color'),
+            halo:map.getPaintProperty(layer.id,'text-halo-color'),
+            haloWidth:map.getPaintProperty(layer.id,'text-halo-width')
+          });
+        }
+      }
+    }
+
+    function styleLabels(mode){
+      for(const [id, original] of originalLabels){
+        if(!map.getLayer(id)) continue;
+        if(mode === 'comic'){
+          safeSetPaint(id,'text-color','#17140e');
+          safeSetPaint(id,'text-halo-color','#fff4c7');
+          safeSetPaint(id,'text-halo-width',2.2);
+        }else if(mode === 'cyberpunk'){
+          safeSetPaint(id,'text-color','#90f7ff');
+          safeSetPaint(id,'text-halo-color','#160021');
+          safeSetPaint(id,'text-halo-width',2.4);
+        }else{
+          safeSetPaint(id,'text-color',original.color);
+          safeSetPaint(id,'text-halo-color',original.halo);
+          safeSetPaint(id,'text-halo-width',original.haloWidth);
+        }
+      }
+    }
+
+    function setOverlayVisibility(mode){
+      const comic = mode === 'comic' ? 'visible' : 'none';
+      const cyber = mode === 'cyberpunk' ? 'visible' : 'none';
+      for(const id of ['comic-water','comic-road-outline','comic-road-inner','comic-building-outline']){
+        if(map.getLayer(id)) map.setLayoutProperty(id,'visibility',comic);
+      }
+      for(const id of ['cyber-road-glow','cyber-road-core']){
+        if(map.getLayer(id)) map.setLayoutProperty(id,'visibility',cyber);
+      }
+    }
+
+    function setBuildingLook(mode){
+      if(!map.getLayer('bor-3d-buildings')) return;
+
+      if(mode === 'comic'){
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-color',buildingColorComic);
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-opacity',.98);
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-vertical-gradient',true);
+      }else if(mode === 'cyberpunk'){
         map.setPaintProperty('bor-3d-buildings','fill-extrusion-color',[
-          'interpolate',['linear'],['coalesce',['get','render_height'],0],
-          0,'#f0dfb6',20,'#d8a85f',60,'#a36a32'
+          'match',
+          ['%', ['to-number', ['coalesce', ['id'], 0]], 4],
+          0,'#00d8ff',1,'#8d3cff',2,'#ff00b8',3,'#22f0ff','#9b00ff'
         ]);
-        map.setPaintProperty('bor-3d-buildings','fill-extrusion-opacity',.95);
-      } else if (mode === 'cyberpunk'){
-        map.setPaintProperty('bor-3d-buildings','fill-extrusion-color',[
-          'interpolate',['linear'],['coalesce',['get','render_height'],0],
-          0,'#00d8ff',18,'#9b00ff',60,'#ff00b8'
-        ]);
-        map.setPaintProperty('bor-3d-buildings','fill-extrusion-opacity',.92);
-      } else {
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-opacity',.94);
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-vertical-gradient',true);
+      }else{
         map.setPaintProperty('bor-3d-buildings','fill-extrusion-color',[
           'interpolate',['linear'],['coalesce',['get','render_height'],0],
           0,'#dedbd2',20,'#c9c4b7',60,'#aaa596'
         ]);
         map.setPaintProperty('bor-3d-buildings','fill-extrusion-opacity',.86);
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-vertical-gradient',true);
       }
     }
 
     function applyMode(mode){
       currentMode = mode;
       document.body.className = `mode-${mode}`;
-
       document.querySelectorAll('.mode-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.mode === mode);
       });
-
       setBuildingLook(mode);
+      setOverlayVisibility(mode);
+      styleLabels(mode);
     }
 
     document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -229,22 +273,108 @@
     map.on('load', () => {
       const layers = map.getStyle().layers;
       let firstLabelLayer;
-
-      for (const layer of layers){
-        if (layer.type === 'symbol' && layer.layout && layer.layout['text-field']){
+      for(const layer of layers){
+        if(layer.type === 'symbol' && layer.layout && layer.layout['text-field']){
           firstLabelLayer = layer.id;
           break;
         }
       }
 
-      map.addSource('bor-buildings',{
+      rememberLabels();
+
+      map.addSource('bor-world',{
         type:'vector',
         url:'https://tiles.openfreemap.org/planet'
       });
 
       map.addLayer({
+        id:'comic-water',
+        source:'bor-world',
+        'source-layer':'water',
+        type:'fill',
+        minzoom:9,
+        layout:{ visibility:'none' },
+        paint:{
+          'fill-color':'#36bdf2',
+          'fill-opacity':.58,
+          'fill-outline-color':'#102a3a'
+        }
+      }, firstLabelLayer);
+
+      map.addLayer({
+        id:'comic-road-outline',
+        source:'bor-world',
+        'source-layer':'transportation',
+        type:'line',
+        minzoom:11,
+        layout:{ visibility:'none', 'line-cap':'round', 'line-join':'round' },
+        paint:{
+          'line-color':'#221c15',
+          'line-opacity':.88,
+          'line-width':['interpolate',['linear'],['zoom'],11,1.4,14,3.8,17,9]
+        }
+      }, firstLabelLayer);
+
+      map.addLayer({
+        id:'comic-road-inner',
+        source:'bor-world',
+        'source-layer':'transportation',
+        type:'line',
+        minzoom:11,
+        layout:{ visibility:'none', 'line-cap':'round', 'line-join':'round' },
+        paint:{
+          'line-color':'#f6e9c8',
+          'line-opacity':.96,
+          'line-width':['interpolate',['linear'],['zoom'],11,.7,14,2.4,17,6.2]
+        }
+      }, firstLabelLayer);
+
+      map.addLayer({
+        id:'cyber-road-glow',
+        source:'bor-world',
+        'source-layer':'transportation',
+        type:'line',
+        minzoom:11,
+        layout:{ visibility:'none', 'line-cap':'round', 'line-join':'round' },
+        paint:{
+          'line-color':'#ff00c8',
+          'line-opacity':.35,
+          'line-blur':3,
+          'line-width':['interpolate',['linear'],['zoom'],11,2,14,6,17,14]
+        }
+      }, firstLabelLayer);
+
+      map.addLayer({
+        id:'cyber-road-core',
+        source:'bor-world',
+        'source-layer':'transportation',
+        type:'line',
+        minzoom:11,
+        layout:{ visibility:'none', 'line-cap':'round', 'line-join':'round' },
+        paint:{
+          'line-color':'#21e8ff',
+          'line-opacity':.88,
+          'line-width':['interpolate',['linear'],['zoom'],11,.5,14,1.5,17,3]
+        }
+      }, firstLabelLayer);
+
+      map.addLayer({
+        id:'comic-building-outline',
+        source:'bor-world',
+        'source-layer':'building',
+        type:'line',
+        minzoom:14,
+        layout:{ visibility:'none' },
+        paint:{
+          'line-color':'#17130f',
+          'line-opacity':.9,
+          'line-width':['interpolate',['linear'],['zoom'],14,.7,17,1.7]
+        }
+      }, firstLabelLayer);
+
+      map.addLayer({
         id:'bor-3d-buildings',
-        source:'bor-buildings',
+        source:'bor-world',
         'source-layer':'building',
         type:'fill-extrusion',
         minzoom:14,
@@ -260,13 +390,14 @@
             15,['coalesce',['get','render_height'],6]
           ],
           'fill-extrusion-base':['coalesce',['get','render_min_height'],0],
-          'fill-extrusion-opacity':.86
+          'fill-extrusion-opacity':.86,
+          'fill-extrusion-vertical-gradient':true
         }
       }, firstLabelLayer);
 
       applyMode(currentMode);
 
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
         setTimeout(() => {
           map.flyTo({
             center:BOR,
@@ -281,25 +412,23 @@
       }
     });
 
-    let raf = null;
-    let targetBearing = -12;
-    let targetPitch = 55;
+    let raf=null;
+    let targetBearing=-12;
+    let targetPitch=55;
 
     window.addEventListener('mousemove',(e) => {
-      if (window.innerWidth < 800 || map.isMoving()) return;
-
-      const nx = (e.clientX / window.innerWidth - .5) * 2;
-      const ny = (e.clientY / window.innerHeight - .5) * 2;
-      targetBearing = -12 + nx * 4.5;
-      targetPitch = 55 - ny * 2.5;
-
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
+      if(window.innerWidth < 800 || map.isMoving()) return;
+      const nx=(e.clientX/window.innerWidth-.5)*2;
+      const ny=(e.clientY/window.innerHeight-.5)*2;
+      targetBearing=-12+nx*4.5;
+      targetPitch=55-ny*2.5;
+      if(raf) cancelAnimationFrame(raf);
+      raf=requestAnimationFrame(() => {
         map.easeTo({
           bearing:targetBearing,
           pitch:targetPitch,
           duration:650,
-          easing:t => t * (2 - t)
+          easing:t=>t*(2-t)
         });
       });
     });
