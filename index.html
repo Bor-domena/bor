@@ -7,113 +7,58 @@
 <title>Bor u Tachova</title>
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css" />
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#0d1714}#map,#comic3d{position:fixed;inset:0}#comic3d{display:none;z-index:1;background:linear-gradient(#4bb8ef 0 52%,#97c86a 52% 100%)}.comic-noise{position:fixed;inset:0;z-index:2;pointer-events:none;display:none;background:radial-gradient(circle,rgba(0,0,0,.22) 0 1px,transparent 1.25px) 0 0/5px 5px;mix-blend-mode:multiply;opacity:.22}.top-ui{position:fixed;z-index:10;top:16px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;width:min(92vw,650px)}.top-note{padding:9px 16px;border-radius:999px;background:rgba(8,13,12,.72);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:13px;font-weight:700;letter-spacing:.04em;backdrop-filter:blur(12px);white-space:nowrap}.mode-switch{display:grid;grid-template-columns:repeat(3,1fr);width:min(92vw,500px);padding:4px;border-radius:18px;background:rgba(4,8,9,.86);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(14px);box-shadow:0 10px 35px rgba(0,0,0,.28)}.mode-btn{appearance:none;border:0;border-radius:14px;padding:11px 14px;color:rgba(255,255,255,.8);background:transparent;font-weight:800;font-size:12px;letter-spacing:.08em;cursor:pointer;transition:.25s}.mode-btn.active{color:#111;background:#fff}.mode-btn[data-mode="comic"].active{background:#ffd738;color:#171100;box-shadow:0 0 22px rgba(255,215,56,.38)}.mode-btn[data-mode="cyberpunk"].active{color:#fff;background:linear-gradient(135deg,#00d9ff,#d900ff 68%);box-shadow:0 0 24px rgba(217,0,255,.42)}body.mode-cyberpunk .maplibregl-canvas{filter:brightness(.58) contrast(1.5) saturate(2.35) hue-rotate(168deg)}body.mode-comic #map{display:none}body.mode-comic #comic3d,body.mode-comic .comic-noise{display:block}.maplibregl-ctrl-top-right{top:118px}.maplibregl-ctrl-bottom-left,.maplibregl-ctrl-bottom-right{z-index:7}@media(max-width:620px){.top-ui{top:10px;gap:7px}.top-note{font-size:11px;padding:8px 12px}.mode-switch{width:min(94vw,400px)}.mode-btn{font-size:10px;padding:9px 8px}.maplibregl-ctrl-top-right{top:106px}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#0d1714}#map{position:fixed;inset:0}.top-ui{position:fixed;z-index:10;top:16px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;width:min(92vw,650px)}.top-note{padding:9px 16px;border-radius:999px;background:rgba(8,13,12,.72);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:13px;font-weight:700;letter-spacing:.04em;backdrop-filter:blur(12px);white-space:nowrap}.mode-switch{display:grid;grid-template-columns:repeat(3,1fr);width:min(92vw,500px);padding:4px;border-radius:18px;background:rgba(4,8,9,.86);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(14px);box-shadow:0 10px 35px rgba(0,0,0,.28)}.mode-btn{appearance:none;border:0;border-radius:14px;padding:11px 14px;color:rgba(255,255,255,.8);background:transparent;font-weight:800;font-size:12px;letter-spacing:.08em;cursor:pointer;transition:.25s}.mode-btn.active{color:#111;background:#fff}.mode-btn[data-mode="comic"].active{background:#ffd738;color:#171100;box-shadow:0 0 22px rgba(255,215,56,.38)}.mode-btn[data-mode="cyberpunk"].active{color:#fff;background:linear-gradient(135deg,#00d9ff,#d900ff 68%);box-shadow:0 0 24px rgba(217,0,255,.42)}.comic-overlay{position:fixed;inset:0;z-index:4;pointer-events:none;opacity:0;transition:.25s}.mode-comic .comic-overlay{opacity:.23;background:radial-gradient(circle,rgba(0,0,0,.26) 0 1px,transparent 1.2px) 0 0/5px 5px;mix-blend-mode:multiply}.mode-comic .maplibregl-canvas{filter:saturate(1.35) contrast(1.12) brightness(1.04)}.mode-cyberpunk .maplibregl-canvas{filter:brightness(.58) contrast(1.5) saturate(2.35) hue-rotate(168deg)}.maplibregl-ctrl-top-right{top:118px}.maplibregl-ctrl-bottom-left,.maplibregl-ctrl-bottom-right{z-index:7}@media(max-width:620px){.top-ui{top:10px;gap:7px}.top-note{font-size:11px;padding:8px 12px}.mode-switch{width:min(94vw,400px)}.mode-btn{font-size:10px;padding:9px 8px}.maplibregl-ctrl-top-right{top:106px}}
 </style>
-<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.179.1/build/three.module.js","three/addons/":"https://unpkg.com/three@0.179.1/examples/jsm/"}}</script>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.179.1/build/three.module.js"}}</script>
 </head>
 <body class="mode-normal">
-<div id="map"></div>
-<div id="comic3d"></div>
-<div class="comic-noise"></div>
+<div id="map"></div><div class="comic-overlay"></div>
 <div class="top-ui"><div class="top-note">Projekt se připravuje · MAKO development</div><div class="mode-switch"><button class="mode-btn active" data-mode="normal">NORMAL</button><button class="mode-btn" data-mode="comic">COMIC</button><button class="mode-btn" data-mode="cyberpunk">CYBERPUNK</button></div></div>
 <script type="module">
 import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const BOR=[12.7752,49.7117];
-const map=new maplibregl.Map({container:'map',style:'https://tiles.openfreemap.org/styles/bright',center:BOR,zoom:13.45,pitch:55,bearing:-12,canvasContextAttributes:{antialias:true},attributionControl:true});
+let mode='normal';
+const map=new maplibregl.Map({container:'map',style:'https://tiles.openfreemap.org/styles/bright',center:BOR,zoom:14.1,pitch:55,bearing:-12,canvasContextAttributes:{antialias:true},attributionControl:true});
 map.addControl(new maplibregl.NavigationControl({visualizePitch:true,showCompass:true}),'top-right');
-
-const comicHost=document.getElementById('comic3d');
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x58bdf2);
-scene.fog=new THREE.Fog(0x79b9d8,120,255);
-const camera=new THREE.PerspectiveCamera(44,innerWidth/innerHeight,.1,700);
-camera.position.set(86,72,112);
-const renderer=new THREE.WebGLRenderer({antialias:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.setSize(innerWidth,innerHeight);
-renderer.shadowMap.enabled=true;
-renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-comicHost.appendChild(renderer.domElement);
-const controls=new OrbitControls(camera,renderer.domElement);
-controls.target.set(0,7,0);controls.enableDamping=true;controls.dampingFactor=.055;controls.minDistance=46;controls.maxDistance=205;controls.maxPolarAngle=Math.PI*.48;
-
-scene.add(new THREE.HemisphereLight(0xffffff,0x536635,2.25));
-const sun=new THREE.DirectionalLight(0xfff1c9,4.2);sun.position.set(-65,95,45);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-120;sun.shadow.camera.right=120;sun.shadow.camera.top=120;sun.shadow.camera.bottom=-120;scene.add(sun);
-
-const ink=0x17130f;
-function mat(color,rough=.9){return new THREE.MeshStandardMaterial({color,roughness:rough,metalness:0,flatShading:true});}
-function addEdges(mesh,color=ink,opacity=.86){const e=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,28),new THREE.LineBasicMaterial({color,transparent:true,opacity}));e.position.copy(mesh.position);e.rotation.copy(mesh.rotation);e.scale.copy(mesh.scale);mesh.parent.add(e);return e;}
-
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(310,260),mat(0x82b95c));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
-// farm fields
-for(let i=0;i<16;i++){const w=14+Math.random()*26,d=9+Math.random()*18;const f=new THREE.Mesh(new THREE.PlaneGeometry(w,d),mat([0xc7bf49,0xe6c45f,0x6fa64c,0xb8d35a][i%4]));f.rotation.x=-Math.PI/2;f.position.set(-130+Math.random()*260,.03,-110+Math.random()*42);scene.add(f);}
-// lake
-const lake=new THREE.Mesh(new THREE.CircleGeometry(28,64),new THREE.MeshStandardMaterial({color:0x39aeea,roughness:.32,metalness:.05}));lake.rotation.x=-Math.PI/2;lake.scale.y=.62;lake.position.set(48,.12,-70);scene.add(lake);addEdges(lake,0x163746,1);
-
-// roads
-function road(x,z,w,d,rot=0){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,d),mat(0x57544c));m.rotation.x=-Math.PI/2;m.rotation.z=rot;m.position.set(x,.08,z);scene.add(m);const edge=new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry),new THREE.LineBasicMaterial({color:0x191714}));edge.rotation.copy(m.rotation);edge.position.copy(m.position);edge.scale.copy(m.scale);scene.add(edge);return m;}
-road(0,0,210,9,0);road(0,0,9,185,0);road(-42,-6,9,155,.42);road(50,12,9,145,-.38);road(-5,48,170,8,.04);road(18,-49,175,8,-.05);
 
 const facadeColors=[0xf6d16a,0xf59a90,0xa8dbed,0xc7e69a,0xf0b95c,0xd3b5df,0xffb4a8,0xf7edd2,0xa8d7cf,0xffdfa0];
 const roofColors=[0xd4431a,0xe85722,0xb93218,0xeb7219,0xc83f1d,0xe65a24];
-function boxMesh(w,h,d,color){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color));m.castShadow=true;m.receiveShadow=true;return m;}
+const ink=0x17130f;
+const comicScene=new THREE.Scene();
+const comicCamera=new THREE.Camera();
+const root=new THREE.Group();comicScene.add(root);
+comicScene.add(new THREE.HemisphereLight(0xffffff,0x59623b,2.2));
+const sun=new THREE.DirectionalLight(0xfff0c4,3.4);sun.position.set(-1,-1,2);comicScene.add(sun);
+let comicRenderer=null, comicReady=false, rebuildTimer=null;
 
-function gableGeometry(w,d,h){const hw=w/2,hd=d/2;const v=new Float32Array([
--hw,0,-hd, hw,0,-hd, 0,h,-hd,
--hw,0, hd, 0,h, hd, hw,0, hd,
--hw,0,-hd, 0,h,-hd, -hw,0,hd,
--hw,0,hd, 0,h,-hd, 0,h,hd,
- hw,0,-hd, hw,0,hd, 0,h,-hd,
- hw,0,hd, 0,h,hd, 0,h,-hd,
- 0,h,-hd, hw,0,-hd, hw,0,hd,
- 0,h,-hd, hw,0,hd, 0,h,hd,
--hw,0,-hd, 0,h,-hd, 0,h,hd,
--hw,0,-hd, 0,h,hd, -hw,0,hd
-]);const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(v,3));g.computeVertexNormals();return g;}
+function mat(c){return new THREE.MeshStandardMaterial({color:c,roughness:.9,metalness:0,flatShading:true});}
+function edgeMaterial(){return new THREE.LineBasicMaterial({color:ink,transparent:true,opacity:.9});}
+function clearRoot(){while(root.children.length){const o=root.children.pop();o.traverse?.(n=>{n.geometry?.dispose?.();if(n.material){if(Array.isArray(n.material))n.material.forEach(m=>m.dispose?.());else n.material.dispose?.();}})}}
+function pseudo(seed){let x=Math.sin(seed*12.9898)*43758.5453;return x-Math.floor(x)}
+function metersPerDegree(lat){return {x:111320*Math.cos(lat*Math.PI/180),y:110540};}
+function centroid(ring){let x=0,y=0;for(const p of ring){x+=p[0];y+=p[1]}return [x/ring.length,y/ring.length]}
+function localFootprint(ring,c){const m=metersPerDegree(c[1]);return ring.map(p=>[(p[0]-c[0])*m.x,(p[1]-c[1])*m.y]);}
+function orientationAndSize(pts){let best=0,ang=0;for(let i=0;i<pts.length-1;i++){const dx=pts[i+1][0]-pts[i][0],dy=pts[i+1][1]-pts[i][1],l=Math.hypot(dx,dy);if(l>best){best=l;ang=Math.atan2(dy,dx)}}const ca=Math.cos(-ang),sa=Math.sin(-ang);let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9;for(const p of pts){const x=p[0]*ca-p[1]*sa,y=p[0]*sa+p[1]*ca;minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y)}return {w:Math.max(3,maxX-minX),d:Math.max(3,maxY-minY),ang};}
+function gableGeometry(w,d,h){const hw=w/2,hd=d/2;const v=new Float32Array([-hw,-hd,0, hw,-hd,0, 0,-hd,h, -hw,hd,0, 0,hd,h, hw,hd,0, -hw,-hd,0,0,-hd,h,-hw,hd,0, -hw,hd,0,0,-hd,h,0,hd,h, hw,-hd,0,hw,hd,0,0,-hd,h, hw,hd,0,0,hd,h,0,-hd,h, 0,-hd,h,hw,-hd,0, 0,-hd,h,hw,hd,0,0,hd,h, -hw,-hd,0,0,-hd,h,0,hd,h, -hw,-hd,0,0,hd,h,-hw,hd,0]);const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(v,3));g.computeVertexNormals();return g;}
+function addEdges(mesh){const e=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry,28),edgeMaterial());e.position.copy(mesh.position);e.rotation.copy(mesh.rotation);e.scale.copy(mesh.scale);mesh.parent.add(e);}
+function box(w,d,h,c){const m=new THREE.Mesh(new THREE.BoxGeometry(w,d,h),mat(c));return m;}
+function addWindow(g,x,y,z,side='front',s=1){const f=box(1.0*s,.16,1.35*s,0x1b2a31),gl=box(.7*s,.19,1.0*s,0xa9e3ef);if(side==='front'){f.position.set(x,y,z);gl.position.set(x,y-.10,z)}else{f.position.set(x,y,z);gl.position.set(x+.10,y,z)}g.add(f,gl)}
+function addDoor(g,x,y,z){const f=box(1.35,.18,2.35,0x4a2d24),p=box(1.05,.21,2.08,0x8b4b2c);f.position.set(x,y,z);p.position.set(x,y-.10,z);g.add(f,p)}
+function addChimney(g,x,y,z){const c=box(.62,.62,1.9,0xf0dfc6);c.position.set(x,y,z);const cap=box(.82,.82,.16,0x3c2b23);cap.position.set(x,y,z+1.03);g.add(c,cap)}
+function addDormer(g,x,y,z,roofC){const b=box(1.6,1.15,.95,0xf6e6bf);b.position.set(x,y,z);g.add(b);const r=new THREE.Mesh(gableGeometry(1.85,1.5,.65),mat(roofC));r.position.set(x,y,z+.48);g.add(r);const w=box(.7,.14,.58,0xa8e0ee);w.position.set(x,y-.66,z+.02);g.add(w)}
+function buildComicHouse(feature,index){let geom=feature.geometry;if(!geom)return;let ring=geom.type==='Polygon'?geom.coordinates[0]:(geom.type==='MultiPolygon'?geom.coordinates[0][0]:null);if(!ring||ring.length<4)return;const c=centroid(ring);const pts=localFootprint(ring,c);const s=orientationAndSize(pts);if(s.w>70||s.d>70||s.w*s.d<8)return;const props=feature.properties||{};const seed=(feature.id??index)+index*13;let h=Number(props.render_height||props.height||0);if(!h){const levels=Number(props['building:levels']||props.levels||0);h=levels?levels*3.1:6.5+pseudo(seed)*7.5;}h=Math.max(4,Math.min(24,h));const floors=Math.max(1,Math.round(h/3.1));const fac=facadeColors[Math.floor(pseudo(seed+2)*facadeColors.length)];const roofC=roofColors[Math.floor(pseudo(seed+4)*roofColors.length)];const group=new THREE.Group();group.rotation.z=s.ang;const base=box(s.w,s.d,h,fac);base.position.z=h/2;group.add(base);addEdges(base);const corn=box(s.w+.22,s.d+.22,.26,0xffecc2);corn.position.z=h-.2;group.add(corn);const roofH=Math.min(4,1.8+Math.min(s.w,s.d)*.14);const roof=new THREE.Mesh(gableGeometry(s.w+.65,s.d+.7,roofH),mat(roofC));roof.position.z=h;group.add(roof);addEdges(roof);const detailed=map.getZoom()>=15.1;if(detailed){const cols=Math.max(2,Math.min(6,Math.floor(s.w/2.5)));for(let fl=0;fl<floors;fl++){const zz=1.55+fl*3.0;if(zz>h-1)return;for(let i=0;i<cols;i++){const x=-s.w/2+1.2+i*(s.w-2.4)/(cols-1||1);addWindow(group,x,-s.d/2-.08,zz,'front',.82);if(i<Math.max(2,Math.floor(s.d/3))){const y=-s.d/2+1.2+i*(s.d-2.4)/(Math.max(2,Math.floor(s.d/3))-1||1);addWindow(group,s.w/2+.08,y,zz,'side',.72)}}}addDoor(group,-s.w*.22,-s.d/2-.10,1.25);if(s.w>8&&pseudo(seed+7)>.25)addDormer(group,-s.w*.2,-s.d*.22,h+roofH*.45,roofC);if(s.w>11&&pseudo(seed+8)>.55)addDormer(group,s.w*.2,-s.d*.22,h+roofH*.45,roofC);addChimney(group,s.w*.26,pseudo(seed+5)>.5?s.d*.12:-s.d*.08,h+roofH*.62)}const mc=maplibregl.MercatorCoordinate.fromLngLat(c,0);const scale=mc.meterInMercatorCoordinateUnits();group.scale.set(scale,scale,scale);group.position.set(mc.x,mc.y,0);root.add(group)}
+function rebuildComic(){if(!comicReady||mode!=='comic'||!map.isSourceLoaded('bor-world'))return;clearRoot();let feats=[];try{feats=map.querySourceFeatures('bor-world',{sourceLayer:'building'})}catch(e){return}const seen=new Set(),unique=[];for(const f of feats){let g=f.geometry;let r=g?.type==='Polygon'?g.coordinates[0]:g?.type==='MultiPolygon'?g.coordinates[0]?.[0]:null;if(!r)continue;const c=centroid(r);const key=(f.id!=null?'id'+f.id:`${c[0].toFixed(6)},${c[1].toFixed(6)}`);if(seen.has(key))continue;seen.add(key);unique.push(f)}unique.slice(0,320).forEach(buildComicHouse);map.triggerRepaint()}
+function scheduleRebuild(){clearTimeout(rebuildTimer);rebuildTimer=setTimeout(rebuildComic,120)}
 
-function addWindow(group,x,y,z,side='front',scale=1){const frame=boxMesh(1.05*scale,1.4*scale,.16,0x20333c);const glass=boxMesh(.72*scale,1.05*scale,.19,0xa8e0ee);if(side==='front'){frame.position.set(x,y,z);glass.position.set(x,y,z-.10)}else{frame.rotation.y=Math.PI/2;glass.rotation.y=Math.PI/2;frame.position.set(x,y,z);glass.position.set(x-.10,y,z)}group.add(frame,glass);}
-function addDoor(group,x,y,z){const f=boxMesh(1.45,2.45,.18,0x4b2c24);const p=boxMesh(1.12,2.18,.20,0x8c4a2b);f.position.set(x,y,z);p.position.set(x,y,z-.10);group.add(f,p);}
-function addDormer(group,x,y,z,roofZ){const body=boxMesh(1.65,.95,1.25,0xf6e5bd);body.position.set(x,y,z);group.add(body);const r=new THREE.Mesh(gableGeometry(1.85,1.55,.72),mat(roofZ));r.position.set(x,y+.47,z);group.add(r);const win=boxMesh(.72,.58,.15,0xa8e0ee);win.position.set(x,y,z-.69);group.add(win);}
-function addChimney(group,x,y,z){const c=boxMesh(.65,2,.65,0xf2dfc2);c.position.set(x,y,z);group.add(c);const cap=boxMesh(.85,.18,.85,0x413028);cap.position.set(x,y+1.05,z);group.add(cap);}
+const comicLayer={id:'comic-3d-buildings',type:'custom',renderingMode:'3d',onAdd(m,gl){comicRenderer=new THREE.WebGLRenderer({canvas:m.getCanvas(),context:gl,antialias:true});comicRenderer.autoClear=false;comicRenderer.outputColorSpace=THREE.SRGBColorSpace;comicReady=true;scheduleRebuild()},render(gl,args){if(mode!=='comic'||!comicRenderer)return;comicCamera.projectionMatrix=new THREE.Matrix4().fromArray(args.defaultProjectionData.mainMatrix);comicRenderer.resetState();comicRenderer.render(comicScene,comicCamera);map.triggerRepaint()}};
 
-function house(x,z,opts={}){
- const g=new THREE.Group();const w=opts.w||8+Math.random()*5,d=opts.d||7+Math.random()*4,floors=opts.floors||2+Math.floor(Math.random()*2),fh=3.05,h=floors*fh,facade=opts.facade??facadeColors[Math.floor(Math.random()*facadeColors.length)],roofC=opts.roof??roofColors[Math.floor(Math.random()*roofColors.length)];
- const base=boxMesh(w,h,d,facade);base.position.y=h/2;g.add(base);addEdges(base);
- const corn=boxMesh(w+.28,.28,d+.28,0xffedc4);corn.position.y=h-.25;g.add(corn);
- const roof=new THREE.Mesh(gableGeometry(w+.75,d+.8,2.9+Math.random()*1.2),mat(roofC));roof.castShadow=true;roof.position.y=h;g.add(roof);addEdges(roof);
- // windows front/back and side
- const cols=Math.max(2,Math.floor(w/2.4));for(let fl=0;fl<floors;fl++){const yy=1.65+fl*fh;for(let c=0;c<cols;c++){const xx=-w/2+1.25+c*(w-2.5)/(cols-1||1);addWindow(g,xx,yy,-d/2-.11,'front',.85);if(c%2===0)addWindow(g,w/2+.11,yy,-d/2+1.5+c*(d-3)/(cols-1||1),'side',.78);}}
- addDoor(g,-w*.22,1.35,-d/2-.14);
- // dormers + chimneys
- if(w>9){addDormer(g,-w*.23,h+1.1,-d*.28,roofC);if(Math.random()>.35)addDormer(g,w*.20,h+1.1,-d*.28,roofC)}
- addChimney(g,w*.28,h+2.6,Math.random()>.5?d*.12:-d*.05);
- g.position.set(x,0,z);g.rotation.y=(Math.random()-.5)*.12;scene.add(g);return g;
-}
-
-// town blocks
-const positions=[];for(let r=-4;r<=4;r++){for(let c=-5;c<=5;c++){if(Math.random()<.18)continue;const x=c*15+(r%2)*4+(Math.random()-.5)*3;const z=r*14+(Math.random()-.5)*3;if(Math.abs(x)<7||Math.abs(z)<6||Math.hypot(x,z)>82)continue;positions.push([x,z]);}}
-positions.forEach((p,i)=>house(p[0],p[1],{floors:i%7===0?4:undefined}));
-// foreground larger houses
-for(let i=-3;i<=3;i++)house(i*19+6,66+(i%2)*5,{w:13,d:10,floors:3});
-
-// church landmark
-function church(){const g=new THREE.Group();const nave=boxMesh(18,13,10,0xf0dfb4);nave.position.y=6.5;g.add(nave);addEdges(nave);const nr=new THREE.Mesh(gableGeometry(18.8,10.8,5),mat(0x4b8d78));nr.position.y=13;g.add(nr);addEdges(nr);const tower=boxMesh(7,28,7,0xead8aa);tower.position.set(-7,14,-1);g.add(tower);addEdges(tower);for(let y of [7,13,19]){addWindow(g,-7,y,-4.6,'front',1.05)}const spire=new THREE.Mesh(new THREE.ConeGeometry(4.6,16,4),mat(0x377664));spire.position.set(-7,36,-1);spire.rotation.y=Math.PI/4;g.add(spire);addEdges(spire);const cross=boxMesh(.25,4,.25,0x1e1710);cross.position.set(-7,45,-1);g.add(cross);g.position.set(-32,0,-22);scene.add(g)}church();
-
-// trees
-const trunkMat=mat(0x6b4428),leafMats=[mat(0x3f7f35),mat(0x568f3b),mat(0x6a9d3e)];for(let i=0;i<135;i++){const x=(Math.random()-.5)*210,z=(Math.random()-.5)*175;if(Math.hypot(x,z)<18||Math.random()<.12)continue;const t=new THREE.Group();const tr=new THREE.Mesh(new THREE.CylinderGeometry(.28,.38,2.3,6),trunkMat);tr.position.y=1.15;t.add(tr);const crown=new THREE.Mesh(new THREE.IcosahedronGeometry(1.65+Math.random()*.9,1),leafMats[i%3]);crown.position.y=3.4;crown.scale.y=1.2;t.add(crown);t.position.set(x,0,z);scene.add(t)}
-
-// comic outline postprocess via object edges already + sky clouds
-for(let i=0;i<12;i++){const cloud=new THREE.Group();for(let j=0;j<4;j++){const s=new THREE.Mesh(new THREE.SphereGeometry(3+Math.random()*2,12,8),mat(0xf8f4e7));s.position.set(j*3+(Math.random()-.5)*2,Math.random()*2,Math.random()*2);cloud.add(s)}cloud.position.set(-90+Math.random()*180,48+Math.random()*20,-105-Math.random()*45);scene.add(cloud)}
-
-let comicStarted=false;function applyMode(mode){document.body.className=`mode-${mode}`;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));if(mode==='comic'&&!comicStarted){comicStarted=true;controls.update()}if(mode==='cyberpunk'){map.setStyle('https://tiles.openfreemap.org/styles/dark')}else if(mode==='normal'){map.setStyle('https://tiles.openfreemap.org/styles/bright')}}
+function setLayerVisibility(id,v){if(map.getLayer(id))map.setLayoutProperty(id,'visibility',v)}
+function applyMode(next){mode=next;document.body.className=`mode-${next}`;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===next));setLayerVisibility('normal-3d',next==='normal'?'visible':'none');setLayerVisibility('comic-road-outline',next==='comic'?'visible':'none');setLayerVisibility('comic-road-inner',next==='comic'?'visible':'none');setLayerVisibility('comic-water',next==='comic'?'visible':'none');setLayerVisibility('cyber-road-glow',next==='cyberpunk'?'visible':'none');setLayerVisibility('cyber-road-core',next==='cyberpunk'?'visible':'none');if(next==='comic')scheduleRebuild();map.triggerRepaint()}
 document.querySelectorAll('.mode-btn').forEach(b=>b.addEventListener('click',()=>applyMode(b.dataset.mode)));
 
-function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);map.resize()});
+map.on('load',()=>{const layers=map.getStyle().layers;let firstLabel;for(const l of layers){if(l.type==='symbol'&&l.layout&&l.layout['text-field']){firstLabel=l.id;break}}map.addSource('bor-world',{type:'vector',url:'https://tiles.openfreemap.org/planet'});map.addLayer({id:'comic-water',source:'bor-world','source-layer':'water',type:'fill',minzoom:9,layout:{visibility:'none'},paint:{'fill-color':'#38bdf8','fill-opacity':.72,'fill-outline-color':'#132934'}},firstLabel);map.addLayer({id:'comic-road-outline',source:'bor-world','source-layer':'transportation',type:'line',minzoom:11,layout:{visibility:'none','line-cap':'round','line-join':'round'},paint:{'line-color':'#1b1814','line-width':['interpolate',['linear'],['zoom'],11,1.6,14,4,17,9.5],'line-opacity':.95}},firstLabel);map.addLayer({id:'comic-road-inner',source:'bor-world','source-layer':'transportation',type:'line',minzoom:11,layout:{visibility:'none','line-cap':'round','line-join':'round'},paint:{'line-color':'#f1e1b7','line-width':['interpolate',['linear'],['zoom'],11,.8,14,2.5,17,6.3],'line-opacity':.98}},firstLabel);map.addLayer({id:'cyber-road-glow',source:'bor-world','source-layer':'transportation',type:'line',minzoom:11,layout:{visibility:'none','line-cap':'round','line-join':'round'},paint:{'line-color':'#ff00c8','line-opacity':.36,'line-blur':3,'line-width':['interpolate',['linear'],['zoom'],11,2,14,6,17,14]}},firstLabel);map.addLayer({id:'cyber-road-core',source:'bor-world','source-layer':'transportation',type:'line',minzoom:11,layout:{visibility:'none','line-cap':'round','line-join':'round'},paint:{'line-color':'#21e8ff','line-opacity':.9,'line-width':['interpolate',['linear'],['zoom'],11,.5,14,1.5,17,3]}},firstLabel);map.addLayer({id:'normal-3d',source:'bor-world','source-layer':'building',type:'fill-extrusion',minzoom:14,paint:{'fill-extrusion-color':'#c8c3b8','fill-extrusion-height':['coalesce',['get','render_height'],8],'fill-extrusion-base':['coalesce',['get','render_min_height'],0],'fill-extrusion-opacity':.86}},firstLabel);map.addLayer(comicLayer,firstLabel);applyMode(mode);setTimeout(()=>map.flyTo({center:BOR,zoom:14.45,pitch:58,bearing:-12,speed:.35,curve:1.2,essential:true}),350)});
+map.on('moveend',scheduleRebuild);map.on('zoomend',scheduleRebuild);map.on('sourcedata',e=>{if(e.sourceId==='bor-world'&&e.isSourceLoaded)scheduleRebuild()});
 </script>
-</body>
-</html>
+</body></html>
