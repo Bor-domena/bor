@@ -10,42 +10,166 @@
 
   <style>
     *{ box-sizing:border-box; }
-    html,body{ margin:0; width:100%; height:100%; overflow:hidden; font-family:Arial,Helvetica,sans-serif; background:#0d1714; }
+    html,body{
+      margin:0;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      font-family:Arial,Helvetica,sans-serif;
+      background:#0d1714;
+    }
+
     #map{ position:fixed; inset:0; }
 
-    .top-note{
+    .maplibregl-canvas{
+      transition:filter .45s ease;
+    }
+
+    .fx-overlay{
       position:fixed;
-      z-index:5;
-      top:18px;
+      inset:0;
+      z-index:3;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .45s ease;
+    }
+
+    body.mode-comic .maplibregl-canvas{
+      filter:saturate(1.38) contrast(1.16) brightness(1.04) sepia(.08);
+    }
+
+    body.mode-comic .fx-overlay{
+      opacity:.25;
+      background:
+        radial-gradient(circle, rgba(0,0,0,.28) 0 1px, transparent 1.2px) 0 0/5px 5px,
+        linear-gradient(180deg, rgba(255,232,166,.10), rgba(0,0,0,.03));
+      mix-blend-mode:multiply;
+    }
+
+    body.mode-cyberpunk{
+      background:#05030b;
+    }
+
+    body.mode-cyberpunk .maplibregl-canvas{
+      filter:brightness(.62) contrast(1.42) saturate(2.15) hue-rotate(168deg);
+    }
+
+    body.mode-cyberpunk .fx-overlay{
+      opacity:1;
+      background:
+        radial-gradient(circle at 32% 35%, rgba(0,224,255,.13), transparent 30%),
+        radial-gradient(circle at 72% 58%, rgba(255,0,204,.17), transparent 34%),
+        linear-gradient(180deg, rgba(8,2,24,.12), rgba(18,0,35,.30));
+      box-shadow:inset 0 0 140px rgba(0,0,0,.65);
+    }
+
+    .top-ui{
+      position:fixed;
+      z-index:8;
+      top:16px;
       left:50%;
       transform:translateX(-50%);
-      padding:10px 16px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      width:min(92vw, 620px);
+    }
+
+    .top-note{
+      padding:9px 16px;
       border-radius:999px;
-      background:rgba(10,18,15,.58);
+      background:rgba(8,13,12,.66);
       border:1px solid rgba(255,255,255,.18);
       color:#fff;
       font-size:13px;
       font-weight:700;
       letter-spacing:.04em;
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      text-shadow:0 2px 14px rgba(0,0,0,.45);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      text-shadow:0 2px 14px rgba(0,0,0,.5);
       white-space:nowrap;
     }
 
+    .mode-switch{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      width:min(92vw, 470px);
+      padding:4px;
+      border-radius:18px;
+      background:rgba(4,8,9,.78);
+      border:1px solid rgba(255,255,255,.20);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      box-shadow:0 10px 35px rgba(0,0,0,.28);
+    }
+
+    .mode-btn{
+      appearance:none;
+      border:0;
+      border-radius:14px;
+      padding:10px 14px;
+      color:rgba(255,255,255,.78);
+      background:transparent;
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:.08em;
+      cursor:pointer;
+      transition:all .25s ease;
+    }
+
+    .mode-btn:hover{ color:#fff; }
+
+    .mode-btn.active{
+      color:#111;
+      background:#fff;
+      box-shadow:0 5px 18px rgba(0,0,0,.26);
+    }
+
+    body.mode-comic .mode-btn[data-mode="comic"].active{
+      color:#171100;
+      background:#ffd738;
+      box-shadow:0 0 20px rgba(255,215,56,.30);
+    }
+
+    body.mode-cyberpunk .mode-btn[data-mode="cyberpunk"].active{
+      color:#fff;
+      background:linear-gradient(135deg,#00d9ff,#d900ff 68%);
+      box-shadow:0 0 24px rgba(217,0,255,.42);
+    }
+
+    .maplibregl-ctrl-top-right{ top:116px; }
     .maplibregl-ctrl-bottom-left,
-    .maplibregl-ctrl-bottom-right{ z-index:4; }
+    .maplibregl-ctrl-bottom-right{ z-index:7; }
+
+    @media(max-width:620px){
+      .top-ui{ top:10px; gap:7px; }
+      .top-note{ font-size:11px; padding:8px 12px; }
+      .mode-switch{ width:min(94vw, 390px); }
+      .mode-btn{ font-size:10px; padding:9px 8px; }
+      .maplibregl-ctrl-top-right{ top:105px; }
+    }
   </style>
 </head>
 
-<body>
+<body class="mode-normal">
   <div id="map"></div>
-  <div class="top-note">Projekt se připravuje · MAKO development</div>
+  <div class="fx-overlay"></div>
+
+  <div class="top-ui">
+    <div class="top-note">Projekt se připravuje · MAKO development</div>
+    <div class="mode-switch" role="group" aria-label="Vzhled mapy">
+      <button class="mode-btn active" data-mode="normal">NORMAL</button>
+      <button class="mode-btn" data-mode="comic">COMIC</button>
+      <button class="mode-btn" data-mode="cyberpunk">CYBERPUNK</button>
+    </div>
+  </div>
 
   <script type="module">
     import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs';
 
     const BOR = [12.7752, 49.7117];
+    let currentMode = 'normal';
 
     const map = new maplibregl.Map({
       container: 'map',
@@ -59,62 +183,101 @@
     });
 
     map.addControl(new maplibregl.NavigationControl({
-      visualizePitch: true,
-      showCompass: true
+      visualizePitch:true,
+      showCompass:true
     }), 'top-right');
+
+    function setBuildingLook(mode){
+      if (!map.getLayer('bor-3d-buildings')) return;
+
+      if (mode === 'comic'){
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-color',[
+          'interpolate',['linear'],['coalesce',['get','render_height'],0],
+          0,'#f0dfb6',20,'#d8a85f',60,'#a36a32'
+        ]);
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-opacity',.95);
+      } else if (mode === 'cyberpunk'){
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-color',[
+          'interpolate',['linear'],['coalesce',['get','render_height'],0],
+          0,'#00d8ff',18,'#9b00ff',60,'#ff00b8'
+        ]);
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-opacity',.92);
+      } else {
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-color',[
+          'interpolate',['linear'],['coalesce',['get','render_height'],0],
+          0,'#dedbd2',20,'#c9c4b7',60,'#aaa596'
+        ]);
+        map.setPaintProperty('bor-3d-buildings','fill-extrusion-opacity',.86);
+      }
+    }
+
+    function applyMode(mode){
+      currentMode = mode;
+      document.body.className = `mode-${mode}`;
+
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+      });
+
+      setBuildingLook(mode);
+    }
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyMode(btn.dataset.mode));
+    });
 
     map.on('load', () => {
       const layers = map.getStyle().layers;
       let firstLabelLayer;
 
-      for (const layer of layers) {
-        if (layer.type === 'symbol' && layer.layout && layer.layout['text-field']) {
+      for (const layer of layers){
+        if (layer.type === 'symbol' && layer.layout && layer.layout['text-field']){
           firstLabelLayer = layer.id;
           break;
         }
       }
 
-      map.addSource('bor-buildings', {
-        type: 'vector',
-        url: 'https://tiles.openfreemap.org/planet'
+      map.addSource('bor-buildings',{
+        type:'vector',
+        url:'https://tiles.openfreemap.org/planet'
       });
 
       map.addLayer({
-        id: 'bor-3d-buildings',
-        source: 'bor-buildings',
-        'source-layer': 'building',
-        type: 'fill-extrusion',
-        minzoom: 14,
-        filter: ['!=', ['get', 'hide_3d'], true],
-        paint: {
-          'fill-extrusion-color': [
-            'interpolate', ['linear'], ['coalesce', ['get','render_height'], 0],
-            0, '#dedbd2',
-            20, '#c9c4b7',
-            60, '#aaa596'
+        id:'bor-3d-buildings',
+        source:'bor-buildings',
+        'source-layer':'building',
+        type:'fill-extrusion',
+        minzoom:14,
+        filter:['!=',['get','hide_3d'],true],
+        paint:{
+          'fill-extrusion-color':[
+            'interpolate',['linear'],['coalesce',['get','render_height'],0],
+            0,'#dedbd2',20,'#c9c4b7',60,'#aaa596'
           ],
-          'fill-extrusion-height': [
-            'interpolate', ['linear'], ['zoom'],
-            14, 0,
-            15, ['coalesce', ['get', 'render_height'], 6]
+          'fill-extrusion-height':[
+            'interpolate',['linear'],['zoom'],
+            14,0,
+            15,['coalesce',['get','render_height'],6]
           ],
-          'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0],
-          'fill-extrusion-opacity': 0.86
+          'fill-extrusion-base':['coalesce',['get','render_min_height'],0],
+          'fill-extrusion-opacity':.86
         }
       }, firstLabelLayer);
 
-      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      applyMode(currentMode);
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
         setTimeout(() => {
           map.flyTo({
-            center: BOR,
-            zoom: 13.65,
-            pitch: 55,
-            bearing: -12,
-            speed: 0.34,
-            curve: 1.25,
-            essential: true
+            center:BOR,
+            zoom:13.65,
+            pitch:55,
+            bearing:-12,
+            speed:.34,
+            curve:1.25,
+            essential:true
           });
-        }, 450);
+        },450);
       }
     });
 
@@ -122,21 +285,21 @@
     let targetBearing = -12;
     let targetPitch = 55;
 
-    window.addEventListener('mousemove', (e) => {
+    window.addEventListener('mousemove',(e) => {
       if (window.innerWidth < 800 || map.isMoving()) return;
 
-      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
-      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      const nx = (e.clientX / window.innerWidth - .5) * 2;
+      const ny = (e.clientY / window.innerHeight - .5) * 2;
       targetBearing = -12 + nx * 4.5;
       targetPitch = 55 - ny * 2.5;
 
       if (raf) cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         map.easeTo({
-          bearing: targetBearing,
-          pitch: targetPitch,
-          duration: 650,
-          easing: t => t * (2 - t)
+          bearing:targetBearing,
+          pitch:targetPitch,
+          duration:650,
+          easing:t => t * (2 - t)
         });
       });
     });
