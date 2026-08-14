@@ -1,11 +1,275 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <title>bor.cz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0d1714" />
+  <title>Bor u Tachova</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.css" />
+
+  <style>
+    :root{
+      --glass: rgba(10, 18, 15, .62);
+      --line: rgba(255,255,255,.20);
+      --text: #fff;
+      --muted: rgba(255,255,255,.78);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; width:100%; height:100%; overflow:hidden; font-family:Arial,Helvetica,sans-serif; background:#0d1714; }
+    #map{ position:fixed; inset:0; }
+
+    .shade{
+      position:fixed; inset:0; pointer-events:none; z-index:2;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.38) 0%, rgba(0,0,0,.05) 42%, rgba(0,0,0,.34) 100%),
+        radial-gradient(circle at 50% 42%, transparent 0 36%, rgba(0,0,0,.22) 100%);
+    }
+
+    header{
+      position:fixed; z-index:4; left:0; right:0; top:0;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:22px 30px;
+      color:var(--text);
+      text-shadow:0 2px 16px rgba(0,0,0,.45);
+    }
+
+    .brand{
+      font-size:18px; font-weight:800; letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+
+    nav{
+      display:flex; gap:22px; font-size:14px; font-weight:700;
+    }
+    nav a{ color:#fff; text-decoration:none; opacity:.86; }
+    nav a:hover{ opacity:1; }
+
+    .hero{
+      position:fixed; z-index:3; left:50%; top:48%;
+      transform:translate(-50%,-50%);
+      width:min(900px, calc(100vw - 44px));
+      text-align:center; color:#fff;
+      pointer-events:none;
+      text-shadow:0 3px 25px rgba(0,0,0,.62);
+    }
+
+    .eyebrow{
+      font-size:13px; letter-spacing:.28em; text-transform:uppercase;
+      font-weight:800; margin-bottom:8px; color:var(--muted);
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(64px, 11vw, 150px);
+      line-height:.88;
+      letter-spacing:-.055em;
+      font-weight:900;
+    }
+
+    .subtitle{
+      margin:14px auto 0;
+      font-size:clamp(16px, 2.1vw, 23px);
+      font-weight:600;
+      color:rgba(255,255,255,.92);
+    }
+
+    .controls{
+      position:fixed; z-index:5; left:50%; bottom:26px;
+      transform:translateX(-50%);
+      display:flex; gap:10px;
+    }
+
+    button{
+      border:1px solid var(--line);
+      background:var(--glass);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      color:white;
+      border-radius:999px;
+      padding:12px 18px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:0 8px 30px rgba(0,0,0,.18);
+    }
+    button:hover{ background:rgba(20,33,28,.78); }
+
+    .hint{
+      position:fixed; z-index:4; right:22px; bottom:24px;
+      color:rgba(255,255,255,.72); font-size:12px;
+      background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.12);
+      border-radius:10px; padding:9px 11px; backdrop-filter:blur(8px);
+      pointer-events:none;
+    }
+
+    .maplibregl-ctrl-bottom-left{ z-index:5; }
+    .maplibregl-ctrl-bottom-right{ z-index:5; }
+
+    @media(max-width:700px){
+      header{ padding:18px; }
+      nav{ display:none; }
+      .hero{ top:45%; }
+      .hint{ display:none; }
+      .controls{ bottom:18px; }
+    }
+
+    @media(prefers-reduced-motion: reduce){
+      *{ scroll-behavior:auto!important; }
+    }
+  </style>
 </head>
+
 <body>
-    <h1>bor.cz funguje! 🚚</h1>
-    <p>První verze webu je úspěšně nasazená přes Cloudflare Pages.</p>
+  <div id="map"></div>
+  <div class="shade"></div>
+
+  <header>
+    <div class="brand">bor.cz</div>
+    <nav>
+      <a href="#">Aktuálně</a>
+      <a href="#">Akce</a>
+      <a href="#">Místa</a>
+      <a href="#">Služby</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div class="eyebrow">Plzeňský kraj · Tachovsko</div>
+    <h1>BOR</h1>
+    <div class="subtitle">Město, lidé, místa a vše důležité na jednom místě.</div>
+  </main>
+
+  <div class="controls">
+    <button id="cityBtn">Přiblížit město</button>
+    <button id="wideBtn">Pohled z výšky</button>
+  </div>
+
+  <div class="hint">Kolečko = zoom · tažení = pohyb · pravé tlačítko = náklon</div>
+
+  <script type="module">
+    import * as maplibregl from 'https://unpkg.com/maplibre-gl@6.3.0/dist/maplibre-gl.mjs';
+
+    const BOR = [12.7752, 49.7117];
+
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: 'https://tiles.openfreemap.org/styles/bright',
+      center: BOR,
+      zoom: 12.25,
+      pitch: 52,
+      bearing: -18,
+      canvasContextAttributes: { antialias: true },
+      attributionControl: true
+    });
+
+    map.addControl(new maplibregl.NavigationControl({
+      visualizePitch: true,
+      showCompass: true
+    }), 'top-right');
+
+    map.on('load', () => {
+      const layers = map.getStyle().layers;
+      let firstLabelLayer;
+
+      for (const layer of layers) {
+        if (layer.type === 'symbol' && layer.layout && layer.layout['text-field']) {
+          firstLabelLayer = layer.id;
+          break;
+        }
+      }
+
+      map.addSource('bor-buildings', {
+        type: 'vector',
+        url: 'https://tiles.openfreemap.org/planet'
+      });
+
+      map.addLayer({
+        id: 'bor-3d-buildings',
+        source: 'bor-buildings',
+        'source-layer': 'building',
+        type: 'fill-extrusion',
+        minzoom: 14,
+        filter: ['!=', ['get', 'hide_3d'], true],
+        paint: {
+          'fill-extrusion-color': [
+            'interpolate', ['linear'], ['coalesce', ['get','render_height'], 0],
+            0, '#dedbd2',
+            20, '#c9c4b7',
+            60, '#aaa596'
+          ],
+          'fill-extrusion-height': [
+            'interpolate', ['linear'], ['zoom'],
+            14, 0,
+            15, ['coalesce', ['get', 'render_height'], 6]
+          ],
+          'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0],
+          'fill-extrusion-opacity': 0.86
+        }
+      }, firstLabelLayer);
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setTimeout(() => {
+          map.flyTo({
+            center: BOR,
+            zoom: 13.65,
+            pitch: 55,
+            bearing: -12,
+            speed: 0.34,
+            curve: 1.25,
+            essential: true
+          });
+        }, 450);
+      }
+    });
+
+    document.getElementById('cityBtn').addEventListener('click', () => {
+      map.flyTo({
+        center: BOR,
+        zoom: 16.2,
+        pitch: 66,
+        bearing: -22,
+        speed: 0.65,
+        curve: 1.35,
+        essential: true
+      });
+    });
+
+    document.getElementById('wideBtn').addEventListener('click', () => {
+      map.flyTo({
+        center: BOR,
+        zoom: 12.25,
+        pitch: 48,
+        bearing: -18,
+        speed: 0.65,
+        curve: 1.25,
+        essential: true
+      });
+    });
+
+    let raf = null;
+    let targetBearing = -12;
+    let targetPitch = 55;
+
+    window.addEventListener('mousemove', (e) => {
+      if (window.innerWidth < 800 || map.isMoving()) return;
+
+      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      targetBearing = -12 + nx * 4.5;
+      targetPitch = 55 - ny * 2.5;
+
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        map.easeTo({
+          bearing: targetBearing,
+          pitch: targetPitch,
+          duration: 650,
+          easing: t => t * (2 - t)
+        });
+      });
+    });
+  </script>
 </body>
 </html>
