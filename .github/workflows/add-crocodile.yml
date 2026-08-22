@@ -1,0 +1,36 @@
+name: Add crocodile comic animal
+on:
+  push:
+    branches: [comic-crocodile]
+    paths: ['.github/workflows/add-crocodile.yml']
+permissions:
+  contents: write
+jobs:
+  edit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: comic-crocodile
+      - name: Add crocodile
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          anchor='<div class="top-ui">'
+          animal='<div class="comic-animal" id="comic-crocodile" data-sound="crocodile" aria-hidden="true"><span class="sprite">🐊</span><span class="bubble">CHŇAP!</span></div>'
+          if 'id="comic-crocodile"' not in s:
+              s=s.replace(anchor, animal+anchor, 1)
+          sound_anchor="case 'zebra':tone('sawtooth',330,190,.18,.07);tone('triangle',420,235,.16,.055,.16);tone('sawtooth',285,150,.22,.05,.34);break;"
+          crocodile="case 'crocodile':tone('sawtooth',120,52,.7,.09);tone('square',88,42,.48,.04,.12);tone('sawtooth',260,110,.25,.025,.42);break;"
+          if "case 'crocodile':" not in s:
+              s=s.replace(sound_anchor, sound_anchor+crocodile, 1)
+          p.write_text(s,encoding='utf-8')
+      - name: Commit change
+        run: |
+          git config user.name "comic-animal-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Add wandering comic crocodile with sound"
+          git push origin comic-crocodile
