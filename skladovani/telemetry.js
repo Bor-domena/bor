@@ -21,7 +21,7 @@
     queue.push({created:Date.now(),event:{id:crypto.randomUUID(),sessionId,kind,snapshot}});queue=queue.slice(-100);persist();void flush();
   }
   document.getElementById('save').addEventListener('click',()=>record('save'));
-  document.getElementById('print').addEventListener('click',()=>record('print'));
+  document.getElementById('print').addEventListener('click',()=>record('print'),{capture:true});
   window.addEventListener('beforeprint',()=>record('print'));
   window.addEventListener('online',flush);setInterval(flush,30000);
   setStatus(false);record('visit');
