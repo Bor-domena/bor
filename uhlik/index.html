@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Od velkého třesku k třešni – film a hra</title>
+<meta name="theme-color" content="#080f26"><meta name="description" content="Lehký naučný film a hra: velký třesk, Higgsovo pole, uhlík a třešeň.">
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:#080f26;color:#f4f8ff;font:16px system-ui,-apple-system,Arial,sans-serif}body{min-height:100dvh;display:flex;justify-content:center;align-items:center;padding:10px}main{width:min(100%,820px)}h1{font-size:clamp(19px,4.4vw,30px);margin:8px 0 5px}p{margin:6px 0 10px;line-height:1.45}small,.muted{color:#afc2dc}#status{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;color:#b9ccee;margin-bottom:9px}#screen{position:relative;border:1px solid #2f496e;border-radius:16px;overflow:hidden;background:#080f25;box-shadow:0 5px 25px #01040c}canvas{display:block;width:100%;height:auto;aspect-ratio:16/9}#introText{position:absolute;left:4%;right:4%;bottom:6%;background:linear-gradient(0deg,rgba(4,9,24,.87),rgba(4,9,24,.7));border-radius:10px;padding:10px 13px;pointer-events:none}#introText strong{font-size:clamp(18px,4vw,30px)}#introText span{display:block;font-size:clamp(12px,2.5vw,17px);margin-top:3px;color:#e1ebfb}#bar{height:5px;background:#23334f;margin:10px 1px;border-radius:8px;overflow:hidden}#fill{height:100%;width:0;background:linear-gradient(90deg,#4f94fe,#79f0d2)}#mission{min-height:68px;font-size:15px;line-height:1.5;white-space:pre-line}#controls{display:flex;flex-wrap:wrap;gap:9px;padding:9px 0 4px}button{appearance:none;border:1px solid #5683b4;background:#133a6d;color:#fff;padding:13px 16px;min-height:48px;border-radius:11px;font-weight:650;font-size:15px;touch-action:manipulation;cursor:pointer}button:active{background:#2b659c}button:disabled{opacity:.42}button.primary{background:#0d8a77;border-color:#19c0a6}button.secondary{background:#1a233b;border-color:#4b5c74}input[type=range]{width:min(100%,350px);height:35px;accent-color:#52d9b6;touch-action:pan-x}#controls.hidden,#introText.hidden{display:none}#footer{color:#91a9c9;font-size:12px;margin-top:8px}
+</style></head><body><main>
+<h1>🌌 Od velkého třesku k třešni 🍒</h1>
+<div id="status"><span id="mode">Film • přehrává se automaticky</span><span id="count">0:00 / 0:32</span></div>
+<div id="screen"><canvas id="c" width="720" height="405" aria-label="Animace vesmíru a naučná hra"></canvas><div id="introText"><strong id="title">Velký třesk</strong><span id="subtitle">Náš příběh začíná před přibližně 13,8 miliardami let.</span></div></div>
+<div id="bar"><div id="fill"></div></div>
+<div id="mission" aria-live="polite">Po skončení filmu se automaticky spustí hra.</div>
+<div id="controls"><button id="skip" class="secondary">Přeskočit film → hra</button></div>
+<div id="footer">Odlehčená verze pro mobil • funguje bez přihlášení i bez stahování videa • vhodná pro sdílení odkazem</div>
+<script>
+(function(){
+"use strict";
+const c=document.getElementById('c'),x=c.getContext('2d',{alpha:false});
+if(!x){document.getElementById('mission').textContent='Prohlížeč nepodporuje Canvas.';return;}
+const $=id=>document.getElementById(id), W=720,H=405,TOTAL=32000;
+const scenes=[
+['Velký třesk','Vesmír se rozpíná z extrémně horkého a hustého raného stavu.'],
+['První zlomek sekundy','Prostor se rozpíná a vesmír postupně chladne.'],
+['Higgsovo pole','Pole získává nenulovou hodnotu. Některé elementární částice díky interakci s ním získávají hmotnost.'],
+['Kvarky a protony','Z kvarků vznikají protony a neutrony. Hmotnost protonu tvoří hlavně energie silné interakce.'],
+['První jádra','Během prvních minut vzniká hlavně vodík a helium.'],
+['Rozsvítí se hvězdy','Gravitace zformuje hvězdy, ve kterých začíná jaderná fúze.'],
+['Vznik uhlíku','V nitrech hvězd se tři jádra helia mohou spojit do jádra uhlíku-12.'],
+['Uhlík letí vesmírem','Hvězdné větry a exploze roznesou uhlík do okolního prostoru.'],
+['Země a život','Z materiálu starších hvězd vznikají planety; na Zemi se objeví život.'],
+['Třešeň','Strom při fotosyntéze přijímá CO₂. Jeho uhlík se dostává do plodu, který utrhne člověk.']
+];
+const stars=Array.from({length:55},(_,i)=>({x:(i*163+47)%720,y:(i*73+19)%405,r:.6+(i%3)*.45}));
+let mode='film',elapsed=0,last=0,level=0,clicks=0,strength=0,ingredients=0,score=0;
+const levels=[
+{title:'1 · Ochlaď vesmír',task:'Po velkém třesku je příliš horko. Stiskni 5× tlačítko a ochlaď vesmír tak, aby se mohly vytvářet stabilnější struktury.',info:'Při ochlazování se mohou vytvářet částice, jádra a později atomy.'},
+{title:'2 · Nastav Higgsovo pole',task:'Posuň intenzitu pole do zelené oblasti (65–80 %) a potvrď. Je to zjednodušený model interakce částic s Higgsovým polem.',info:'Higgsovo pole přispívá k hmotnosti elementárních částic, ne však k celé hmotnosti protonu.'},
+{title:'3 · Vyrob uhlík ve hvězdě',task:'Přidej postupně tři jádra helia, aby vzniklo jedno jádro uhlíku-12.',info:'Tzv. trojitý alfa proces ve hvězdách vytváří uhlík ze tří jader helia.'},
+{title:'4 · Uvolni uhlík do vesmíru',task:'Uvolni 4 shluky uhlíku z hvězdy do mezihvězdného prostředí.',info:'Uhlík se může uvolnit hvězdným větrem či při závěrečných fázích vývoje hvězd.'},
+{title:'5 · Spusť fotosyntézu',task:'Dodej stromu všechny tři zdroje: oxid uhličitý, vodu a sluneční světlo.',info:'Rostliny ukládají uhlík z atmosférického CO₂ do organických látek.'},
+{title:'6 · Nech vyrůst třešeň',task:'Dopřej stromu 4 slunečné dny. Uhlík z fotosyntézy se postupně dostává do plodů.',info:'Třešeň roste díky látkám vytvořeným stromem, zejména ze sacharidů.'},
+{title:'7 · Sklizeň',task:'Klepni na červenou třešeň na obrázku, nebo stiskni tlačítko Sklidit.',info:'Atom uhlíku v třešni může mít historii sahající až k dávným hvězdám.'}
+];
+function bg(top='#080e22',bottom='#162b54'){const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,top);g.addColorStop(1,bottom);x.fillStyle=g;x.fillRect(0,0,W,H);for(let s of stars){x.fillStyle='rgba(223,238,255,.55)';x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fill();}}
+function circle(cx,cy,r,col){x.fillStyle=col;x.beginPath();x.arc(cx,cy,Math.max(0,r),0,Math.PI*2);x.fill();}
+function line(a,b,d,e,color='#b9e5fc',w=3){x.strokeStyle=color;x.lineWidth=w;x.beginPath();x.moveTo(a,b);x.lineTo(d,e);x.stroke();}
+function text(t,px,py,size=25,color='#fff'){x.textAlign='center';x.textBaseline='middle';x.font='bold '+size+'px system-ui,Arial';x.fillStyle=color;x.fillText(t,px,py);}
+function universe(p){bg();let r=15+p*170;for(let i=5;i>=1;i--){x.strokeStyle='rgba(91,163,255,'+(0.14+i*.09)+')';x.lineWidth=2;x.beginPath();x.arc(360,197,r*i/5,0,Math.PI*2);x.stroke();}circle(360,197,8+p*12,'#ffde9b');}
+function particles(p){bg();for(let i=0;i<24;i++){let a=i*Math.PI*2/24+p*1.5;let r=45+(i%4)*30+p*35;circle(360+Math.cos(a)*r,188+Math.sin(a)*r*.7,4+(i%3),i%2?'#f4b36b':'#71dffe');}text('kvarky • elektrony • pole',360,330,20,'#cceafa');}
+function atoms(p){bg();for(let i=0;i<7;i++){let cx=105+(i%4)*160,cy=135+Math.floor(i/4)*125;circle(cx,cy,17,'#f28b74');circle(cx+12,cy+8,13,'#75bdf4');x.strokeStyle='#9bd6ff';x.lineWidth=1.7;x.beginPath();x.ellipse(cx,cy,42,24,p*.5,0,6.28);x.stroke();circle(cx+Math.cos(p*8+i)*40,cy+Math.sin(p*8+i)*25,4,'#e9edff');}}
+function star(cx,cy,r,p){let g=x.createRadialGradient(cx,cy,10,cx,cy,r);g.addColorStop(0,'#fff5c9');g.addColorStop(.25,'#ffd16f');g.addColorStop(.62,'rgba(245,116,57,.65)');g.addColorStop(1,'rgba(245,96,45,0)');circle(cx,cy,r,g);circle(cx,cy,r*.22,'#ffe1a0');}
+function earth(){bg();circle(360,196,104,'#2373aa');x.fillStyle='#66c79d';x.beginPath();x.ellipse(320,180,38,52,.4,0,Math.PI*2);x.ellipse(392,220,30,39,-.4,0,Math.PI*2);x.fill();circle(320,110,25,'rgba(255,255,255,.17)');}
+function tree(growth){bg('#0a1935','#285644');x.fillStyle='#294929';x.fillRect(0,335,720,70);line(365,335,365,195,'#906244',22);line(365,255,310,214,'#906244',10);line(365,248,421,209,'#906244',10);for(let i=0;i<14;i++){let a=i*2.399,r=28+(i%4)*17,cx=365+Math.cos(a)*r*1.4,cy=198+Math.sin(a)*r*.65;circle(cx,cy,28+(i%3)*5,i%2?'#318d53':'#247843');}if(growth>0){let k=Math.max(0,Math.min(1,growth/4));circle(425,248,8+9*k,'#ef324c');circle(307,251,7+7*k,'#d61f4f');line(418,237,430,220,'#76b26b',3);} }
+function cherry(p){tree(4);circle(424,242,20,'#e32043');circle(427,235,8,'#ff6274');line(423,226,435,207,'#529858',4);if(p>0)text('👋',513,261,60);}
+function renderFilm(t){let ix=Math.min(9,Math.floor(t/(TOTAL/10))),p=(t%(TOTAL/10))/(TOTAL/10);$('title').textContent=scenes[ix][0];$('subtitle').textContent=scenes[ix][1];if(ix<=1)universe(p);else if(ix<=3)particles(p);else if(ix===4)atoms(p);else if(ix===5){bg();star(360,190,176,p);}else if(ix===6){bg();star(360,195,154,p);for(let i=0;i<3;i++){let a=i*2.094+p;circle(360+Math.cos(a)*92,195+Math.sin(a)*80,16,'#77dffe');}}else if(ix===7){bg();star(360,200,100,p);for(let i=0;i<28;i++){let a=i*2.399,r=70+p*(90+(i%5)*20);circle(360+Math.cos(a)*r,190+Math.sin(a)*r,3,'#f7b38b');}}else if(ix===8)earth();else cherry(p);$('count').textContent='0:'+String(Math.floor(t/1000)).padStart(2,'0')+' / 0:32';$('fill').style.width=(t/TOTAL*100)+'%';}
+function renderGame(t){let p=t*.001;switch(level){case 0:universe(.1+clicks/5*.9);text('Teplota: '+(100-clicks*20)+' %',360,336,27,'#d2edff');break;
+case 1:particles(p%6/6);x.fillStyle='#142842';x.fillRect(170,320,380,20);x.fillStyle=strength>=65&&strength<=80?'#4fe0ab':'#f3bd65';x.fillRect(170,320,380*strength/100,20);text('Pole: '+strength+' %',360,291,24);break;
+case 2:bg();star(360,195,165,p);for(let i=0;i<clicks;i++){let a=i*2.094;circle(360+Math.cos(a)*40,196+Math.sin(a)*40,19,'#7ae7ff');}text(clicks+' / 3 jader helia',360,346,25);break;
+case 3:bg();star(360,180,116,p);for(let i=0;i<clicks*5;i++){let a=i*2.399,r=150+((i*29)%75);circle(360+Math.cos(a)*r,180+Math.sin(a)*r,4,'#f5d5af');}text(clicks+' / 4 uvolněných shluků',360,348,25);break;
+case 4:tree(1);text('CO₂ '+(ingredients&1?'✓':'○')+'    H₂O '+(ingredients&2?'✓':'○')+'    Světlo '+(ingredients&4?'✓':'○'),360,50,25);break;
+case 5:tree(clicks);text('Den '+clicks+' / 4',360,49,28);break;
+default:cherry(0);text('Klepni na třešeň!',390,60,26);}}
+function mk(label,fn,cls=''){let b=document.createElement('button');b.textContent=label;b.className=cls;b.onclick=fn;$('controls').appendChild(b);return b;}
+function setControls(){let box=$('controls');box.textContent='';if(mode==='film'){mk('Přeskočit film → hra',startGame,'secondary');return;}if(mode==='done'){mk('Přehrát film znovu',()=>{mode='film';elapsed=0;$('introText').classList.remove('hidden');$('mode').textContent='Film • přehrává se automaticky';$('count').textContent='0:00 / 0:32';$('mission').textContent='Po skončení filmu se automaticky spustí hra.';setControls();},'primary');mk('Hrát znovu',startGame,'secondary');return;}
+if(level===0)mk('❄️ Ochladit',()=>advance(5),'primary');
+if(level===1){const sl=document.createElement('input');sl.type='range';sl.min='0';sl.max='100';sl.value=String(strength);sl.setAttribute('aria-label','Intenzita Higgsova pole');sl.oninput=()=>{strength=+sl.value};box.appendChild(sl);mk('Potvrdit nastavení',()=>{if(strength>=65&&strength<=80)finishLevel();else $('mission').textContent='Nastav 65–80 %, aktuálně '+strength+' %.\\n'+levels[level].task;},'primary');}
+if(level===2)mk('⚛️ Přidat helium-4',()=>advance(3),'primary');
+if(level===3)mk('✨ Uvolnit uhlík',()=>advance(4),'primary');
+if(level===4){[['CO₂',1],['💧 Voda',2],['☀️ Světlo',4]].forEach(([s,m])=>mk(s,()=>{ingredients|=m;if(ingredients===7)finishLevel();else setControls();},ingredients&m?'secondary':'primary'));}
+if(level===5)mk('☀️ Další den',()=>advance(4),'primary');
+if(level===6)mk('🍒 Sklidit třešeň',finishLevel,'primary');
+mk('↻ Film od začátku',()=>{mode='film';elapsed=0;$('introText').classList.remove('hidden');$('mode').textContent='Film • přehrává se automaticky';$('mission').textContent='Po skončení filmu se automaticky spustí hra.';setControls();},'secondary');
+}
+function advance(goal){clicks++;if(clicks>=goal)finishLevel();}
+function finishLevel(){let desc=levels[level].info;score++;level++;clicks=0;strength=0;ingredients=0;if(level>=levels.length){mode='done';$('mode').textContent='Dokončeno • 7/7 úrovní';$('count').textContent='✓';$('mission').textContent='🎉 Úspěch! Vytvořil jsi cestu uhlíku od raného vesmíru až do třešně.\\n'+desc;$('fill').style.width='100%';setControls();return;}$('mission').textContent='✓ '+desc+'\\n\\n'+levels[level].task;$('mode').textContent=levels[level].title;$('count').textContent=(level+1)+'/7';$('fill').style.width=(level/7*100)+'%';setControls();}
+function startGame(){mode='game';level=0;score=0;clicks=0;strength=0;ingredients=0;$('introText').classList.add('hidden');$('mode').textContent=levels[0].title;$('count').textContent='1/7';$('fill').style.width='0%';$('mission').textContent=levels[0].task;setControls();}
+c.addEventListener('pointerup',function(e){if(mode!=='game'||level!==6)return;let r=c.getBoundingClientRect(),px=(e.clientX-r.left)*720/r.width,py=(e.clientY-r.top)*405/r.height;if(Math.hypot(px-424,py-242)<72)finishLevel();});
+$('skip').onclick=startGame;
+document.addEventListener('visibilitychange',()=>{last=0;});
+function loop(now){if(!last)last=now;let dt=Math.max(0,Math.min(75,now-last));if(now-last<40){requestAnimationFrame(loop);return;}last=now;if(document.hidden){requestAnimationFrame(loop);return;}if(mode==='film'){elapsed+=dt;renderFilm(Math.min(elapsed,TOTAL));if(elapsed>=TOTAL)startGame();}else if(mode==='game')renderGame(now);else cherry(1);requestAnimationFrame(loop);}
+renderFilm(0);requestAnimationFrame(loop);
+})();
+</script></main></body></html>
