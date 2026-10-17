@@ -24,7 +24,18 @@ body[data-theme=bw]{--bg:#f1f1f1;--paper:#fff;--ink:#171717;--muted:#606060;--li
 @media(max-width:650px){.shell{width:min(100% - 26px,520px)}header{height:67px}.brand svg{width:27px;height:27px}.brand strong{font-size:22px}.brand small{font-size:7px;letter-spacing:.09em}.actions{gap:7px}.theme-toggle{font-size:10px;padding:10px}.small-cta{font-size:10px;padding:10px}.page{padding-top:13px}.hero{grid-template-columns:minmax(0,1fr) 126px;min-height:286px;gap:0}.hero-copy{padding:22px 5px 22px 17px}.eyebrow{font-size:8px;letter-spacing:.12em}.hero h1{font-size:clamp(42px,10.8vw,61px);margin:14px 0 13px;line-height:.83}.lead{font-size:11px;line-height:1.45}.hero-cta{margin-top:14px;gap:7px}.main-btn{font-size:10px;padding:10px 11px}.hero-note{font-size:9px;line-height:1.3}.hero-visual{padding:6px;align-items:center}.video-frame{width:107px;height:196px;border-width:3px;border-radius:10px;transform:rotate(1deg)}.video-tag{font-size:7px;top:5px;left:4px;padding:4px}.video-name{font-size:8px;padding:5px;bottom:12px;right:4px}.section-top{margin:17px 0 8px}.section-top h2{font-size:25px}.section-top small{font-size:9px}.prices{grid-template-columns:1fr;gap:8px}.price-card{padding:12px 15px;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;column-gap:12px;align-items:center}.price-head{font-size:11px}.price-detail{grid-column:1;grid-row:2;min-height:0;font-size:10px}.price-number{grid-column:2;grid-row:1 / 3;font-size:29px}.calc{grid-template-columns:1fr 1fr;gap:9px;padding:13px 14px}.calc-intro{grid-column:1/-1}.calc h3{font-size:21px}.calc label{font-size:9px}.calc input,.calc select{max-width:100%;width:100%}.calc-result{min-width:0}.calc-result strong{font-size:25px}.calc button{min-width:0;white-space:normal;font-size:10px}.foot{display:block;font-size:9px}.foot .sources{white-space:normal;display:block;margin-top:6px}}
 @media(max-width:370px){.hero{grid-template-columns:minmax(0,1fr) 105px}.video-frame{width:91px;height:163px}.hero h1{font-size:40px}.hero-visual{padding:2px}.lead{font-size:10px}.hero-note{display:none}.small-cta{padding:10px 8px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
-</style>
+
+/* Customer details and quote tools */
+.lead-data{grid-column:1 / -1;display:flex;gap:12px;border-top:1px solid var(--line);padding-top:10px}.lead-data label{flex:1 1 50%;min-width:0}.lead-data label small{font-size:9px;letter-spacing:0;text-transform:none;font-weight:500;color:var(--muted)}.calc .lead-data input{width:100%;max-width:100%;height:38px;padding:9px 11px}.quote-actions{grid-column:1 / -1;display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap}.quote-actions button{padding:10px 13px;min-height:37px;font-size:11px}.quote-actions .pdf-primary{background:var(--accent);color:#fff}.action-feedback{font-size:10px;color:var(--muted);flex:1 1 130px;min-height:12px}.privacy-note{grid-column:1 / -1;font-size:10px!important;color:var(--muted);line-height:1.45;margin:0!important}.print-sheet{display:none}
+@media(max-width:650px){.lead-data{gap:8px}.calc .lead-data input{min-width:0}.quote-actions{justify-content:stretch;gap:6px}.quote-actions button{flex:1;min-width:0;padding:9px 4px;font-size:10px}.quote-actions .action-feedback{flex:1 1 100%;order:2}.privacy-note{font-size:9px!important}}
+@media print{
+@page{size:A4;margin:18mm}
+body,html{background:#fff!important;color:#1b302c!important}
+body>header,body>main{display:none!important}
+.print-sheet{display:block!important;font:15px/1.5 Arial,sans-serif;color:#1b302c!important;max-width:175mm;margin:0 auto;background:#fff}
+.print-sheet .ps-top{border-bottom:3px solid #1c302d;padding-bottom:14mm;margin-bottom:12mm}
+.print-sheet .ps-brand{font-size:27px;font-weight:800;color:#1c302d;letter-spacing:.09em}.print-sheet h1{font-size:25px;margin:15px 0 7px}.print-sheet .ps-small{font-size:12px;color:#68756f}.print-sheet dl>div{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #ddd;padding:12px 0}.print-sheet dt{color:#67746e}.print-sheet dd{margin:0;font-weight:700;text-align:right}.print-sheet .ps-price{font-size:27px;border:2px solid #1c302d;padding:15px;margin:22px 0}.print-sheet .ps-price span{display:block;font-size:12px;margin-bottom:8px}.print-sheet .ps-disclaimer{font-size:12px;color:#68756f;margin-top:28px}
+}</style>
 </head>
 <body data-theme="normal">
 <header><div class="shell bar">
@@ -48,6 +59,17 @@ body[data-theme=bw]{--bg:#f1f1f1;--paper:#fff;--ink:#171717;--muted:#606060;--li
 <label for="service">Vybraná služba<select id="service"><option value="0">Mytí střechy</option><option value="1">Mytí + impregnace</option><option value="2" selected>Mytí + nástřik</option></select></label>
 <div class="calc-result" aria-live="polite"><small>Odhad celkem</small><strong id="result">48 000–58 500 Kč</strong></div>
 <button type="button" id="share">Sdílet poptávku ↗</button>
+<div class="lead-data">
+  <label for="leadName">Jméno / firma <small>(nepovinné)</small><input id="leadName" maxlength="100" autocomplete="name" placeholder="Např. Novák"></label>
+  <label for="leadEmail">E-mail <small>(nepovinný)</small><input id="leadEmail" type="email" maxlength="160" autocomplete="email" placeholder="např. info@firma.cz"></label>
+</div>
+<div class="quote-actions">
+  <button type="button" id="calcRecord">Uložit výpočet</button>
+  <button type="button" id="printQuote">Tisk <span aria-hidden="true">↗</span></button>
+  <button type="button" id="pdfQuote" class="pdf-primary">Vytvořit PDF ↓</button>
+  <span class="action-feedback" id="quoteStatus" role="status" aria-live="polite"></span>
+</div>
+<p class="privacy-note">Kontakty jsou dobrovolné. Uložené výpočty se zatím evidují pouze v tomto prohlížeči; nikam se automaticky neodesílají.</p>
 </section>
 <footer class="foot"><span>DENIS STŘECHY · Cenové rozpětí je orientační přehled trhu, nikoli závazná nabídka firmy. U starších krytin může být nutné odborné posouzení.</span><span class="sources">Zdroje cen: <a href="https://vysokotlake-myti.cz/cenik" target="_blank" rel="noopener noreferrer">Vysokotlaké mytí</a> · <a href="https://www.cisteni-myti-natery-fasad.cz/cenik-2/" target="_blank" rel="noopener noreferrer">Ceník renovací</a></span></footer>
 </main>
@@ -65,4 +87,13 @@ $('share').addEventListener('click',async()=>{let q=getQuote();if(!q.amount){$('
 const video=$('roofVideo');video.muted=true;video.play().catch(()=>{});video.addEventListener('error',()=>{video.poster='';let v=video.closest('.video-frame');v.style.background='#354c42';if(!v.querySelector('.load-error')){const s=document.createElement('span');s.className='load-error';s.textContent='Video se načítá / zkuste obnovit stránku';s.style.cssText='position:absolute;bottom:40px;color:white;font-size:11px;text-align:center;padding:8px';v.appendChild(s)}});
 })();
 </script>
+<section class="print-sheet" id="printSheet" aria-label="Tisk orientační kalkulace">
+ <div class="ps-top"><div class="ps-brand">DENIS STŘECHY</div><div class="ps-small">Mytí · ochrana · nástřik střech</div></div>
+ <h1>Orientační kalkulace renovace střechy</h1><p class="ps-small">Vyhotoveno: <span id="psDate">—</span></p>
+ <dl><div><dt>Jméno / firma</dt><dd id="psName">—</dd></div><div><dt>E-mail</dt><dd id="psEmail">—</dd></div>
+ <div><dt>Vybraná služba</dt><dd id="psService">—</dd></div><div><dt>Plocha střechy</dt><dd id="psArea">—</dd></div></dl>
+ <div class="ps-price"><span>Orientační cenové rozpětí</span><strong id="psPrice">—</strong></div>
+ <p class="ps-disclaimer">Nezávazný odhad dle orientačního ceníku. Cenu upřesníme podle stavu střechy, krytiny, jejího sklonu a přístupnosti objektu.</p>
+</section>
+<script src="./quote-tools.js?v=1" defer></script>
 </body></html>
