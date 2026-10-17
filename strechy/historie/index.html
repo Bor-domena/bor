@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#172b26"><title>Historie · Denis střechy</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1b302c;background:#f3f5f1}*{box-sizing:border-box}body{margin:0}header{background:#1c302d;color:white;padding:18px max(16px,calc((100vw - 1050px)/2));display:flex;justify-content:space-between;gap:16px;align-items:center}header strong{font-size:19px;letter-spacing:.06em}header a{color:#dbdfd7;text-decoration:none;font-size:13px}main{max-width:1080px;margin:auto;padding:27px 18px 70px}.eyebrow{font-size:11px;letter-spacing:.12em;color:#cc5037;text-transform:uppercase;font-weight:800}h1{font-size:clamp(28px,5vw,42px);margin:9px 0 5px}.desc{font-size:13px;color:#576d64;line-height:1.65;max-width:810px}.warning{background:#fff4e4;border:1px solid #e8d1ad;border-radius:11px;padding:13px 17px;font-size:13px;line-height:1.55;color:#715133;margin:23px 0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:19px 0}.stat,.panel{background:#fff;border:1px solid #d8e0d9;border-radius:13px}.stat{padding:15px 18px}.stat b{display:block;font-size:26px;margin-top:8px}.stat span{font-size:12px;color:#64756d}.tools{display:flex;justify-content:space-between;gap:9px;flex-wrap:wrap;align-items:center;margin:18px 0 12px}.filters{display:flex;align-items:center;flex-wrap:wrap;gap:8px}.filters input,.filters select,button{border:1px solid #cfd8d1;border-radius:8px;background:white;color:#19312b;padding:11px;font:inherit;font-size:12px}button{cursor:pointer;font-weight:700}button.primary{background:#1c302d;color:#fff;border-color:#1c302d}button:disabled{opacity:.5;cursor:default}.table{overflow:auto}.panel{overflow:hidden}table{border-collapse:collapse;width:100%;min-width:745px;font-size:12px}th{background:#e8eee8;font-size:11px;letter-spacing:.03em;text-transform:uppercase;text-align:left;color:#4f6257;padding:14px 13px}td{padding:14px 13px;border-top:1px solid #edf1ec;vertical-align:top}tr:nth-child(even){background:#f8faf7}.pill{display:inline-block;border-radius:4px;padding:4px 7px;background:#ecf1eb;white-space:nowrap}.pill.pdf,.pill.print{background:#e5eff6}.pill.calc{background:#e2f2e6}.minor{font-size:10px;color:#60736b}.empty{padding:35px;text-align:center;font-size:13px;color:#68766e}.foot{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:11px;color:#5e7266;margin-top:16px;flex-wrap:wrap}button.danger{color:#9c3d30;border-color:#e6bcb8}@media(max-width:650px){header strong{font-size:15px}.stats{grid-template-columns:repeat(3,1fr);gap:6px}.stat{padding:12px 9px}.stat b{font-size:23px}.stat span{font-size:10px}.tools{align-items:stretch}.filters{width:100%}.filters>*{flex:1}.tools>div:last-child{display:flex;gap:8px}.tools>div:last-child button{flex:1}}
+</style></head>
+<body>
+<header><strong>DENIS STŘECHY · HISTORIE</strong><a href="../">← Zpět na web</a></header>
+<main>
+<div class="eyebrow">Přehled použití kalkulačky</div><h1>Historie výpočtů</h1>
+<p class="desc">Záznamy návštěv, uložených výpočtů, tisku a PDF. Časy se zobrazují pro ČR. Jméno a e-mail jsou uvedené pouze tehdy, pokud je návštěvník sám vyplnil.</p>
+<div class="warning"><b>Prozatím pouze místní historie.</b> Záznamy jsou jen v prohlížeči, ve kterém byly pořízeny. Není to zabezpečená centrální evidence návštěvníků ani soukromý účet. Aby bylo možné sledovat návštěvníky z jiných zařízení a povolit přístup pouze vám, je potřeba připojit serverovou databázi a přihlášení správce.</div>
+<section class="stats" aria-label="Souhrn"><div class="stat"><span>Všechny události</span><b id="allCount">0</b></div><div class="stat"><span>Výpočty</span><b id="calcCount">0</b></div><div class="stat"><span>Tisk a PDF</span><b id="exportCount">0</b></div></section>
+<div class="tools"><div class="filters"><select id="type" aria-label="Typ události"><option value="">Všechny události</option><option value="visit">Návštěvy</option><option value="calc">Výpočty</option><option value="print">Tisk</option><option value="pdf">PDF</option><option value="share">Sdílení</option></select><input type="search" id="search" placeholder="Hledat jméno, e-mail…" aria-label="Hledání"></div><div><button type="button" class="primary" id="csv">↓ Export CSV</button> <button type="button" id="refresh">Obnovit</button></div></div>
+<div class="panel"><div class="table"><table><thead><tr><th>Datum a čas</th><th>Akce</th><th>Návštěvník</th><th>Služba</th><th>m²</th><th>Orientační cena</th></tr></thead><tbody id="records"></tbody></table></div><div class="empty" id="empty" hidden>V tomto prohlížeči zatím nejsou žádné záznamy.</div></div>
+<div class="foot"><span id="counter">—</span><button class="danger" id="clear" type="button">Vymazat místní historii</button></div>
+</main>
+<script>
+(()=>{'use strict';const KEY='denis-strechy-history-v1';const $=id=>document.getElementById(id);const names={visit:'Návštěva',calc:'Výpočet',print:'Tisk',pdf:'PDF',share:'Sdílení'};
+const fmt=n=>new Intl.NumberFormat('cs-CZ').format(n);
+let all=[],shown=[];function load(){try{all=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(all))all=[]}catch(e){all=[]}all.reverse();draw()}
+function cell(tr,str){const td=document.createElement('td');td.textContent=str;tr.appendChild(td);return td}
+function draw(){
+const val=$('search').value.toLocaleLowerCase('cs-CZ'),kind=$('type').value;
+shown=all.filter(e=>(!kind||e.kind===kind)&&(!val||((e.quote?.name||'')+' '+(e.quote?.email||'')).toLocaleLowerCase('cs-CZ').includes(val)));
+$('allCount').textContent=fmt(all.length);$('calcCount').textContent=fmt(all.filter(e=>e.kind==='calc').length);
+$('exportCount').textContent=fmt(all.filter(e=>e.kind==='print'||e.kind==='pdf').length);
+const body=$('records');body.replaceChildren();
+for(const e of shown){
+ const tr=document.createElement('tr');let date='—';try{date=new Date(e.at).toLocaleString('cs-CZ')}catch(_){}
+ cell(tr,date);const badge=cell(tr,'');const el=document.createElement('span');el.className='pill '+(e.kind||'');el.textContent=names[e.kind]||e.kind;badge.appendChild(el);
+ const q=e.quote||{};const user=cell(tr,q.name||q.email||'Neznámý návštěvník');if(q.name&&q.email){const d=document.createElement('div');d.className='minor';d.textContent=q.email;user.append(d)}
+ cell(tr,q.service||'—');cell(tr,Number.isFinite(q.area)?fmt(q.area):'—');cell(tr,Number.isFinite(q.low)&&Number.isFinite(q.high)?fmt(q.low)+'–'+fmt(q.high)+' Kč':'—');body.appendChild(tr)
+}
+$('empty').hidden=shown.length>0;$('counter').textContent='Zobrazeno '+fmt(shown.length)+' záznamů (z tohoto zařízení)';
+$('csv').disabled=!shown.length;
+}
+$('type').addEventListener('change',draw);$('search').addEventListener('input',draw);$('refresh').addEventListener('click',load);
+$('clear').addEventListener('click',()=>{if(confirm('Opravdu vymazat všechny místní záznamy historie?')){localStorage.removeItem(KEY);load()}});
+$('csv').addEventListener('click',()=>{
+ const rows=[['Datum','Událost','Jméno','E-mail','Služba','Plocha m²','Od Kč','Do Kč']];
+ shown.forEach(e=>{let q=e.quote||{};rows.push([e.at,names[e.kind]||e.kind,q.name||'',q.email||'',q.service||'',q.area??'',q.low??'',q.high??''])});
+ const csv='\ufeff'+rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n');
+ const link=document.createElement('a');const u=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));link.href=u;link.download='denis-strechy-historie-'+new Date().toISOString().slice(0,10)+'.csv';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(u),1500)
+});load();
+})();
+</script></body></html>
