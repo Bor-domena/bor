@@ -185,11 +185,11 @@ document.querySelectorAll("[data-step]").forEach(function(el){el.addEventListene
 ["priceBattery","priceSolar","pricePrep"].forEach(function(k){byId(k).addEventListener("change",function(){state[k]=clamp(k,this.value);render();});});
 var timer=0;function toast(s){var t=byId("toast");t.textContent=s;t.classList.add("show");clearTimeout(timer);timer=setTimeout(function(){t.classList.remove("show");},2600);}
 byId("share").addEventListener("click",async function(){
-var url=new URL(location.href);url.search="";Object.keys(paramMap).forEach(function(key){url.searchParams.set(key,String(state[paramMap[key]]));});url.hash="prezentace";
+var url=new URL(location.href);url.search="";Object.keys(paramMap).forEach(function(key){url.searchParams.set(key,String(state[paramMap[key]]));});var pricing=window.babkaEnergyPricingSnapshot?window.babkaEnergyPricingSnapshot():{};Object.keys(pricing).forEach(function(key){url.searchParams.set("m_"+key,String(pricing[key]));});url.hash="prezentace";
 try{await navigator.clipboard.writeText(url.href);toast("Odkaz na scénář zkopírován.");}catch(e){try{window.prompt("Zkopírujte odkaz:",url.href);}catch(x){}}
 });
 byId("print").addEventListener("click",function(){window.print();});
-byId("reset").addEventListener("click",function(){state=Object.assign({},defaults);try{history.replaceState(null,"",location.pathname+location.hash);}catch(e){}render();toast("Výchozí varianta obnovena.");});
+byId("reset").addEventListener("click",function(){state=Object.assign({},defaults);try{history.replaceState(null,"",location.pathname+location.hash);}catch(e){}if(window.babkaEnergyResetPrices)window.babkaEnergyResetPrices();render();toast("Výchozí varianta obnovena.");});
 render();
 })();
 </script>
@@ -205,6 +205,8 @@ const dec=(v,n=2)=>v.toLocaleString("cs-CZ",{minimumFractionDigits:n,maximumFrac
 const readData=()=>{try{return JSON.parse(localStorage.getItem("babka-energy-v1")||"null")||{};}catch(e){return {}};};
 const existing=readData();let stage={battery:existing.battery||1,solar:existing.solar||0,partners:existing.partners||0,priceBattery:existing.priceBattery||1700000,priceSolar:existing.priceSolar||240000,pricePrep:existing.pricePrep??300000};
 let p={...baseline};try{let x=JSON.parse(localStorage.getItem("babka-energy-prices-v1")||"null");if(x&&typeof x==="object")for(let k of Object.keys(baseline))if(Number.isFinite(x[k]))p[k]=x[k];}catch(e){}
+const shared=new URLSearchParams(location.search);for(let key of Object.keys(baseline)){const v=shared.get("m_"+key);if(v!==null&&Number.isFinite(Number(v))&&Number(v)>=0)p[key]=Number(v);}
+window.babkaEnergyPricingSnapshot=()=>({...p});window.babkaEnergyResetPrices=()=>{p={...baseline};for(let [key,id] of Object.entries(ids))document.getElementById(id).value=p[key];render();};
 const $=id=>document.getElementById(id);
 for(let [key,id] of Object.entries(ids)){
  const el=$(id);el.value=p[key];
