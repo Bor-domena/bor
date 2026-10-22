@@ -17,17 +17,23 @@
 @media(max-width:960px){.heroGrid{grid-template-columns:1fr}.hero{padding-top:55px}.visual{width:min(100%,540px);margin:auto}.metrics{grid-template-columns:repeat(2,1fr)}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.phaseGrid{grid-template-columns:1fr 1fr}.phase:last-child{grid-column:1/-1;min-height:330px}.financeGrid{grid-template-columns:1fr}.sectionTop{align-items:start}}
 @media(max-width:640px){.container{width:calc(100% - 30px)}header{height:67px}.navTag{display:none}.navRight{gap:13px}.navLink{font-size:12px}.brand{font-size:13px}.brandMark{height:34px;width:34px}.hero{padding:43px 0 43px}.heroGrid{gap:18px}.hero h1{font-size:43px;letter-spacing:-.06em}.intro{font-size:14px}.heroButtons .btn{font-size:11px;padding:11px 12px}.visual{min-height:368px;transform:scale(.88);width:115%;margin-left:-7.5%;margin-top:-12px;margin-bottom:-24px}.visual:before{inset:15px 0 10px}.visual:after{inset:25px 10px 21px}.systemTag{top:33px}.battery{width:145px;height:204px;padding:14px}.bpower{font-size:25px}.cells{height:59px;margin-top:17px}.node{width:84px}.nodeIcon{width:57px;height:57px;border-radius:17px}.nodeSun{left:5px;top:100px}.nodePartner{right:2px;top:100px}.nodeGrid{right:12px;bottom:30px}.lineOne{width:30px;left:86px;top:150px}.lineTwo{width:30px;right:84px;top:150px}.lineThree{width:49px;left:auto;right:68px;top:241px}.systemFoot{bottom:25px}.metrics{border-radius:15px}.metric{padding:19px 17px}.metric strong{font-size:23px}.metric label{font-size:10px}.phases,.finance{padding-top:65px}.phaseGrid{grid-template-columns:1fr}.phase:last-child{grid-column:auto}.phase{min-height:350px;padding:24px}.sectionTop{display:block}.sectionTop h2{font-size:34px}.sectionTop p{max-width:none}.budget,.summary{padding:22px}.totalRow{padding:16px}.totalRow strong{font-size:24px}.capBox{padding:14px}.capBox strong{font-size:18px}.settingsGrid{grid-template-columns:1fr}.whyGrid{grid-template-columns:1fr;gap:12px}.cautionGrid{grid-template-columns:1fr;gap:8px}.footer{align-items:start;flex-direction:column}.budgetRow strong{font-size:13px}}
 @media print{header,.heroButtons,.heroLabel,.stepper,.financeActions,.settings,.sources a:after,#toast{display:none!important}body{background:#fff;color:#142934;print-color-adjust:exact;-webkit-print-color-adjust:exact}.container{width:100%}.hero{padding:15px 0 20px;background:#fff}.hero h1{font-size:42px}.hero h1 em{color:#285e49}.intro,.sectionTop p,.phase p,.whyCard p,.caution p{color:#3b5660}.visual{display:none}.metrics{margin-top:0;grid-template-columns:repeat(4,1fr);background:#f2f6f4}.metric{padding:12px}.metric strong{font-size:18px}.phases,.finance{padding-top:24px;padding-bottom:25px}.phaseGrid{grid-template-columns:repeat(3,1fr)}.phase,.phase:last-child{grid-column:auto;min-height:300px;background:#eff6f3;color:#11303c;padding:15px}.phase h3{font-size:18px}.unitPrice{font-size:17px}.phase p{font-size:11px}.feature{color:#234d43}.budget,.summary{background:#eef5f2;color:#12333a}.budgetRow span,.budgetRow small,.flowSmall p{color:#415f65}.capBox{background:#e6f1eb}.capBox strong{color:#21383a}.why,.caution{padding:20px 0}.whyGrid{grid-template-columns:repeat(3,1fr)}.footer{padding:10px 0}@page{size:A4;margin:12mm}}
+
+/* Prezentace v jednom tahu: mapové pozadí, svislá navigace a partnerský model */
+html{scroll-padding-top:90px}.hero{position:relative;isolation:isolate}.hero .heroMapBg{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.36;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 38%,transparent 99%);mask-image:linear-gradient(to bottom,#000 0%,#000 38%,transparent 99%)}.hero .heroMapBg iframe{display:block;width:100%;height:100%;min-height:630px;filter:grayscale(.28) invert(.89) hue-rotate(154deg) contrast(.88) saturate(.72);border:0;pointer-events:none}.hero .heroGrid{position:relative;z-index:1}.hero .intro{color:#e1f0f0}.locationPill{display:inline-flex;align-items:center;gap:8px;background:#0d2c37df;border:1px solid #80d7a67c;padding:8px 12px;border-radius:20px;font-size:11px;color:#def3e5;margin:7px 0 5px}.locationPill i{display:inline-block;width:8px;height:8px;background:#bff979;border-radius:100%}.sectionRail{position:fixed;z-index:28;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;padding:12px 9px;border-radius:25px;background:#071421bd;border:1px solid #56747866;backdrop-filter:blur(8px)}.sectionRail a{width:12px;height:12px;border:2px solid #80d1c8;border-radius:50%;opacity:.75}.sectionRail a:hover,.sectionRail a:focus{background:var(--mint);border-color:var(--mint);opacity:1}
+.pricingSection{padding:18px 0 65px}.pricingTitle{font-size:clamp(29px,4vw,46px);letter-spacing:-.05em;margin:10px 0}.pricingLead{font-size:13px;color:#aabfc6;line-height:1.7;max-width:760px}.pricingGrid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.pricingPanel{padding:24px;border:1px solid #315461;border-radius:19px;background:linear-gradient(155deg,#123340,#0a1d2c)}.priceTable{width:100%;border-collapse:collapse;font-size:13px}.priceTable th,.priceTable td{padding:13px 9px;border-bottom:1px solid #38545f;text-align:left;vertical-align:top}.priceTable th{color:#b5cbc9;font-size:11px;text-transform:uppercase;letter-spacing:.06em}.priceTable td:first-child{color:#d5e5e3}.priceTable td small{display:block;font-size:10px;color:#8cabb2;margin-top:5px;line-height:1.4}.priceTable td:nth-child(3){color:var(--mint);font-weight:700}.priceControls{display:grid;grid-template-columns:1fr 1fr;gap:13px}.priceControl{font-size:11px;color:#accbc8;font-weight:600}.priceControl input{margin-top:6px;width:100%;padding:11px;border:1px solid #4b7378;border-radius:10px;background:#0a202b;color:#f4fffb;font-size:16px;font-variant-numeric:tabular-nums;min-width:0}.priceControl.wide{grid-column:span 2}.compareMessage{margin-top:18px;padding:14px;border:1px solid #669e8588;border-radius:13px;background:#bff97913;color:#cfeede;font-size:12px}.compareMessage.warning{border-color:#c3976d;background:#9d522422;color:#ffdaab}.financeMetrics{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:17px 0}.financeMetric{background:#102b37;border:1px solid #315462;border-radius:15px;padding:19px 15px}.financeMetric small{display:block;color:#a3bbbd;font-size:11px;min-height:33px}.financeMetric strong{display:block;font-size:clamp(20px,2.25vw,26px);letter-spacing:-.045em;margin:5px 0}.financeMetric span{display:block;color:#90a7b0;font-size:10px;line-height:1.55}.returnGrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;margin-top:14px}.returnGrid .pricingPanel{min-width:0}.returnNumber{font-size:clamp(29px,4.3vw,47px);color:var(--mint);font-weight:750;letter-spacing:-.06em;margin:12px 0}.returnBreakdown{font-size:12px;color:#b9cacc;line-height:1.9}.returnCanvas{width:100%;height:290px;display:block;background:#09212b;border:1px solid #31505b;border-radius:15px}.finePrint{font-size:11px;color:#94afba;line-height:1.7;margin-top:15px}.finePrint a{color:#bff979;text-decoration:underline}.pricingPanel h3{font-size:18px;margin:0 0 13px}.pricingPanel p{font-size:12px;color:#abc3c6;line-height:1.6}.pricingSection .warn{color:#ffd08d}.pricingSection .good{color:#bff979}
+@media(max-width:920px){.pricingGrid,.returnGrid{grid-template-columns:1fr}.financeMetrics{grid-template-columns:repeat(2,1fr)}}@media(max-width:640px){.sectionRail{right:6px;padding:8px 5px;gap:10px}.sectionRail a{width:9px;height:9px}.pricingPanel{padding:17px}.priceControls{grid-template-columns:1fr}.priceControl.wide{grid-column:auto}.priceTable th,.priceTable td{font-size:11px;padding:10px 5px}.financeMetric{padding:13px}.financeMetric strong{font-size:19px}.financeMetric small{font-size:10px}}@media print{.heroMapBg,.sectionRail,.priceControl{display:none!important}.pricingGrid,.returnGrid{display:block}.pricingPanel{background:#eff6f4;color:#14303b;margin-bottom:10px;break-inside:avoid}.financeMetrics{grid-template-columns:repeat(4,1fr)}.pricingPanel h3,.pricingPanel p,.returnBreakdown{color:#14303b}.priceTable td:first-child{color:#14303b}.finePrint{color:#47636b}}
+
 </style>
 </head>
 <body>
-<header><div class="nav container"><a class="brand" href="#uvod" aria-label="Babka Bor Energy – úvod"><span class="brandMark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M13 2 4 13h7l-1 9 10-13h-7l0-7Z"/></svg></span><span>BABKA BOR <b>ENERGY</b></span></a><div class="navRight"><span class="navTag">Pracovní verze / 2026</span><a class="navLink" href="#prezentace">Prezentace</a></div></div></header>
+<header><div class="nav container"><a class="brand" href="#uvod" aria-label="Babka Bor Energy – úvod"><span class="brandMark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M13 2 4 13h7l-1 9 10-13h-7l0-7Z"/></svg></span><span>BABKA BOR <b>ENERGY</b></span></a><div class="navRight"><span class="navTag">Pracovní verze / 2026</span><a class="navLink" href="#prezentace">Prezentace</a></div></div></header><nav class="sectionRail" aria-label="Posun prezentace"><a href="#uvod" title="Úvod"></a><a href="#prezentace" title="Etapy"></a><a href="#rozpocet" title="Rozpočet"></a><a href="#ceny" title="ČEZ a naše ceny"></a><a href="#partneri" title="Výnos partnerů"></a><a href="#navratnost" title="Návratnost"></a></nav>
 <main id="uvod">
-<section class="hero"><div class="container heroGrid"><div>
+<section class="hero"><div class="heroMapBg" aria-hidden="true"><iframe loading="lazy" tabindex="-1" title="Mapa Boru u Tachova" src="https://www.openstreetmap.org/export/embed.html?bbox=12.751%2C49.694%2C12.802%2C49.736&amp;layer=mapnik&amp;marker=49.716709%2C12.777209"></iframe></div><div class="container heroGrid"><div>
 <div class="eyebrow">Energetický projekt · Bor u Tachova</div>
 <h1>Energie, která <em>roste s námi.</em></h1>
 <p class="intro">Začneme společným bateriovým úložištěm. Jak bude projekt růst, přidáme vlastní solární výrobu a zapojíme další partnery s fotovoltaikou. Každý další krok lze navrhnout podle dostupných prostředků.</p>
 <div class="heroButtons"><a class="btn btnMint" href="#prezentace">Prohlédnout prezentaci <span aria-hidden="true">↗</span></a><a class="btn" href="#rozpocet">Otevřít rozpočet <span aria-hidden="true">↓</span></a></div>
-<div class="heroLabel"><span class="dot"></span>Koncept pro jednání s budoucími partnery · orientační model, ne nabídka</div>
+<div class="locationPill"><i></i>Babka, Bor u Tachova · navrhované místo bateriového úložiště (bod u Nádražní 481 je orientační)</div><div class="heroLabel"><span class="dot"></span>Koncept pro jednání s budoucími partnery · orientační model, ne nabídka</div>
 </div>
 <div class="visual" role="img" aria-label="Schéma projektu: budoucí solární panely a zdroje partnerů, uprostřed bateriové úložiště, napojení na síť.">
 <div class="orb"></div><div class="orb orbit2"></div><div class="systemTag">Babka energy system / koncept</div>
@@ -74,6 +80,67 @@
 <div class="flowSmall"><h4>Jak bude projekt růst</h4><p>01 → baterie a energetické řízení<br>02 → vlastní výroba solární energie<br>03 → partnerská spolupráce a smluvní model</p></div>
 <div class="financeActions"><button class="btn btnMint" type="button" id="share">⤴ Sdílet scénář</button><button class="btn" type="button" id="print">↧ Tisk / PDF</button><button class="btn btnSmall" type="button" id="reset">↺</button></div>
 </div></div></section>
+
+<section id="ceny" class="container pricingSection">
+  <div class="eyebrow">Energetika / nákup a prodej</div>
+  <h2 class="pricingTitle">Výhodněji než ČEZ – pro obě strany.</h2>
+  <p class="pricingLead">Babka Bor Energy chce nabídnout partnerům vyšší cenu za přebytky a odběratelům nižší obchodní cenu. Naše ceny můžete měnit a hned uvidíte dopad na výnos partnera, naši obchodní marži a návratnost investice.</p>
+  <div class="pricingGrid">
+    <div class="pricingPanel">
+      <h3>ČEZ vs. Babka Bor Energy</h3>
+      <table class="priceTable"><thead><tr><th>Za 1 kWh elektřiny</th><th>ČEZ – zveřejněný model</th><th>Naše modelová cena</th></tr></thead>
+        <tbody>
+          <tr><td>Odměna výrobci za přebytek<small>ČEZ: hodnota zápočtu za přetoky u produktu pro domácnosti – není automaticky hotovostní výkup.</small></td><td id="cezBuyCell">2,78 Kč</td><td id="ourBuyCell">2,95 Kč</td></tr>
+          <tr><td>Cena dodávky elektřiny<small>ČEZ: obchodní složka ceny produktu Elektřina pro soláry, bez distribuce.</small></td><td id="cezSellCell">3,297 Kč</td><td id="ourSellCell">3,19 Kč</td></tr>
+          <tr><td>Rozdíl kupní a prodejní ceny<small>Naše hrubá marže před ztrátami a náklady.</small></td><td>–</td><td id="spreadCell">0,24 Kč/kWh</td></tr>
+        </tbody>
+      </table>
+      <div class="compareMessage" id="priceAdvantage">Partner u nás získá o 0,17 Kč/kWh více a zákazník zaplatí o 0,107 Kč/kWh méně než srovnávací ceny ČEZ.</div>
+      <p class="finePrint">Srovnání ČEZ slouží pouze jako orientační benchmark dvou různých veřejných produktových údajů, ne jako právně či obchodně totožné nabídky. Zdroje: <a href="https://www.cez.cz/nextcez/cs/pro-media/tiskove-zpravy/s-fotovoltaikou-jeste-vyhodneji.-cez-prodej-zlevnuje-elektrinu-domacnostem-se-solary-234459" target="_blank" rel="noopener noreferrer">ČEZ Prodej, 19. 5. 2026</a>.</p>
+    </div>
+    <div class="pricingPanel">
+      <h3>Nastavte naše ceny</h3>
+      <div class="priceControls">
+        <label class="priceControl">Naše výkupní cena (Kč/kWh)<input id="ownBuyInput" type="number" inputmode="decimal" min="0" step="0.01" value="2.95"></label>
+        <label class="priceControl">Naše prodejní cena (Kč/kWh)<input id="ownSellInput" type="number" inputmode="decimal" min="0" step="0.01" value="3.19"></label>
+        <label class="priceControl">ČEZ – přetoky (Kč/kWh)<input id="cezBuyInput" type="number" inputmode="decimal" min="0" step="0.01" value="2.78"></label>
+        <label class="priceControl">ČEZ – obchodní cena (Kč/kWh)<input id="cezSellInput" type="number" inputmode="decimal" min="0" step="0.001" value="3.297"></label>
+        <label class="priceControl">Přebytek na partnera (kWh/rok)<input id="partnerSurplusInput" type="number" inputmode="numeric" min="0" step="100" value="8000"></label>
+        <label class="priceControl">Podíl energie přes baterii (%)<input id="storageShareInput" type="number" inputmode="numeric" min="0" max="100" step="5" value="50"></label>
+        <label class="priceControl">Účinnost baterie při oběhu (%)<input id="efficiencyInput" type="number" inputmode="numeric" min="1" max="100" step="1" value="90"></label>
+        <label class="priceControl">Roční čistý přínos BESS (Kč/kabinet)<input id="bessIncomeInput" type="number" inputmode="numeric" min="0" step="10000" value="145000"></label>
+        <label class="priceControl wide">Roční čistý přínos vlastní FVE (Kč/10 kWp)<input id="solarIncomeInput" type="number" inputmode="numeric" min="0" step="5000" value="35000"></label>
+      </div>
+      <p class="finePrint">Ceny a předpoklady jsou modelové. Bez garance dostupnosti, obchodních marží nebo technického řešení. Když změníte cenu, graf níže se ihned přepočítá. Pro změnu návratnosti z partnerské energie přidejte v etapě 03 alespoň jednoho partnera (+).</p>
+    </div>
+  </div>
+</section>
+<section id="partneri" class="container pricingSection">
+  <div class="eyebrow">Etapa 03 / příjem partnerů</div>
+  <h2 class="pricingTitle">Kolik vydělá každý partner?</h2>
+  <p class="pricingLead">Při stejném množství přebytků srovnáme příjem jednoho partnera. Přepočítává se automaticky podle jeho předpokládaného ročního objemu a naší výkupní ceny. Jde o tržbu za přebytek, nikoli čistý zisk celé FVE.</p>
+  <div class="financeMetrics" aria-live="polite">
+    <div class="financeMetric"><small>1 partner / srovnání ČEZ</small><strong id="partnerCezRevenue">22 240 Kč</strong><span>modelová hodnota přetoků za rok</span></div>
+    <div class="financeMetric"><small>1 partner / výkup u nás</small><strong id="partnerOurRevenue">23 600 Kč</strong><span>modelová tržba partnera za rok</span></div>
+    <div class="financeMetric"><small>Rozdíl pro partnera za rok</small><strong id="partnerGain">+1 360 Kč</strong><span>vůči porovnávané ceně ČEZ</span></div>
+    <div class="financeMetric"><small>Naše marže od všech partnerů</small><strong id="ourPartnerMargin">0 Kč</strong><span>roční marže po modelové ztrátě energie, před ostatními náklady</span></div>
+  </div>
+  <p class="finePrint">V modelu počítáme pouze s přebytky, které lze smluvně koupit a následně prodat; 50 % přes baterii s účinností 90 % je výchozí odhad, který lze změnit. V praxi je třeba prověřit možnost obchodování, měření, distribuční poplatky, zúčtování odchylek, dostupnost energie ve stejném čase i dimenzování úložiště.</p>
+</section>
+<section id="navratnost" class="container pricingSection">
+  <div class="eyebrow">Financování / roky 0–15</div>
+  <h2 class="pricingTitle">Návratnost projektu</h2>
+  <div class="returnGrid">
+    <div class="pricingPanel">
+      <h3>Modelová doba návratnosti</h3>
+      <div class="returnNumber" id="roiNumber">13,8 roku</div>
+      <div class="returnBreakdown" id="roiBreakdown"></div>
+      <div class="compareMessage" id="roiNotice">Při výchozím stavu bez partnerů se výkupní a prodejní cena na návratnosti neprojeví. Přidejte partnera (+) v etapě 03.</div>
+      <p class="finePrint">Zjednodušená prostá návratnost: vstupní investice / modelový roční provozní přínos. Bez financování, daní, změn cen, mimořádných oprav a dalších kapitálových výdajů. Případné překrývání obchodních výnosů BESS s partnerským modelem musí být před realizací vyloučeno.</p>
+    </div>
+    <div class="pricingPanel"><h3>Vývoj kumulativního cashflow</h3><canvas id="roiGraph" class="returnCanvas" width="760" height="330" role="img" aria-label="Graf návratnosti projektu v horizontu 15 let"></canvas><div class="finePrint">Zelená = kumulativní cashflow, modrá = hranice návratnosti. Všechny hodnoty jsou pouze odhad pro prezentaci.</div></div>
+  </div>
+</section>
 <section class="container why"><div class="sectionTop"><div><div class="eyebrow">Společná vize</div><h2>Proč jít touto cestou?</h2></div></div><div class="whyGrid">
 <div class="whyCard"><span class="whyNumber">01 / POSTUPNÉ INVESTICE</span><b>Začneme s jedním úložištěm</b><p>Není nutné financovat celé konečné řešení hned. Další bateriové kabinety lze plánovat po ověření ekonomiky i podmínek připojení.</p></div>
 <div class="whyCard"><span class="whyNumber">02 / VLASTNÍ VÝROBA</span><b>Panely přidáme ve správnou chvíli</b><p>Budoucí vlastní fotovoltaika může doplnit energetický mix. Výkon FVE a kapacitu baterií budeme navrhovat společně podle reálného provozu.</p></div>
@@ -112,6 +179,7 @@ byId("capacityBattery").textContent=whole(215*b)+" kWh";byId("capacityPower").te
 Object.keys(defaults).filter(function(k){return k.indexOf("price")===0;}).forEach(function(k){if(document.activeElement!==byId(k))byId(k).value=state[k];});
 document.querySelectorAll("[data-step]").forEach(function(btn){var t=btn.getAttribute("data-step").split(":"),key=t[0],diff=Number(t[1]);btn.disabled=(diff<0?state[key]<=limits[key][0]:state[key]>=limits[key][1]);});
 try{localStorage.setItem("babka-energy-v1",JSON.stringify(state));}catch(e){}
+document.dispatchEvent(new CustomEvent("babka:state",{detail:Object.assign({},state)}));
 }
 document.querySelectorAll("[data-step]").forEach(function(el){el.addEventListener("click",function(){var x=el.getAttribute("data-step").split(":"),k=x[0];state[k]=clamp(k,state[k]+Number(x[1]));render();});});
 ["priceBattery","priceSolar","pricePrep"].forEach(function(k){byId(k).addEventListener("change",function(){state[k]=clamp(k,this.value);render();});});
@@ -125,5 +193,73 @@ byId("reset").addEventListener("click",function(){state=Object.assign({},default
 render();
 })();
 </script>
-</body>
+
+<script>
+(function(){
+"use strict";
+const baseline={ourBuy:2.95,ourSell:3.19,cezBuy:2.78,cezSell:3.297,partnerSurplus:8000,storageShare:50,efficiency:90,bessIncome:145000,solarIncome:35000};
+const ids={ourBuy:"ownBuyInput",ourSell:"ownSellInput",cezBuy:"cezBuyInput",cezSell:"cezSellInput",partnerSurplus:"partnerSurplusInput",storageShare:"storageShareInput",efficiency:"efficiencyInput",bessIncome:"bessIncomeInput",solarIncome:"solarIncomeInput"};
+const money=v=>Math.round(v).toLocaleString("cs-CZ")+" Kč";
+const signed=v=>(v>=0?"+":"−")+money(Math.abs(v));
+const dec=(v,n=2)=>v.toLocaleString("cs-CZ",{minimumFractionDigits:n,maximumFractionDigits:n});
+const readData=()=>{try{return JSON.parse(localStorage.getItem("babka-energy-v1")||"null")||{};}catch(e){return {}};};
+const existing=readData();let stage={battery:existing.battery||1,solar:existing.solar||0,partners:existing.partners||0,priceBattery:existing.priceBattery||1700000,priceSolar:existing.priceSolar||240000,pricePrep:existing.pricePrep??300000};
+let p={...baseline};try{let x=JSON.parse(localStorage.getItem("babka-energy-prices-v1")||"null");if(x&&typeof x==="object")for(let k of Object.keys(baseline))if(Number.isFinite(x[k]))p[k]=x[k];}catch(e){}
+const $=id=>document.getElementById(id);
+for(let [key,id] of Object.entries(ids)){
+ const el=$(id);el.value=p[key];
+ el.addEventListener("input",function(){
+   let v=Number(this.value);if(!Number.isFinite(v)||v<0)return;
+   if(key==="storageShare"||key==="efficiency")v=Math.max(key==="efficiency"?1:0,Math.min(100,v));
+   p[key]=v;render();
+ });
+}
+document.addEventListener("babka:state",e=>{stage={...stage,...e.detail};render();});
+function chart(capex,annual){
+ const canvas=$("roiGraph"),ctx=canvas.getContext("2d");if(!ctx)return;
+ const w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+ const left=78,right=20,top=25,bottom=36,plotW=w-left-right,plotH=h-top-bottom;
+ const values=Array.from({length:16},(_,i)=>-capex+i*annual);
+ let min=Math.min(...values,0),max=Math.max(...values,0);if(max===min){max+=1;min-=1}
+ const x=yr=>left+yr*plotW/15, y=v=>top+(max-v)*plotH/(max-min);
+ ctx.textAlign="right";ctx.font="11px system-ui";
+ for(let k=0;k<=5;k++){let val=min+(max-min)*k/5,yy=y(val);ctx.beginPath();ctx.strokeStyle="#ffffff23";ctx.lineWidth=1;ctx.moveTo(left,yy);ctx.lineTo(w-right,yy);ctx.stroke();ctx.fillStyle="#a4bdc0";ctx.fillText((val/1000000).toLocaleString("cs-CZ",{maximumFractionDigits:2})+" mil.",left-9,yy+4)}
+ ctx.textAlign="center";for(let yr=0;yr<=15;yr+=3){ctx.fillStyle="#a4bdc0";ctx.fillText(yr+" r.",x(yr),h-12)}
+ ctx.beginPath();ctx.strokeStyle="#70b6ff";ctx.lineWidth=2;ctx.moveTo(left,y(0));ctx.lineTo(w-right,y(0));ctx.stroke();
+ ctx.beginPath();values.forEach((v,i)=>i?ctx.lineTo(x(i),y(v)):ctx.moveTo(x(i),y(v)));ctx.strokeStyle="#bff979";ctx.lineWidth=3;ctx.stroke();
+ ctx.beginPath();ctx.fillStyle="#ffda8a";ctx.arc(x(0),y(-capex),5,0,Math.PI*2);ctx.fill();
+ const breakEven=annual>0?capex/annual:Infinity;
+ if(breakEven<=15){ctx.beginPath();ctx.setLineDash([4,5]);ctx.strokeStyle="#70b6ff";ctx.moveTo(x(breakEven),top);ctx.lineTo(x(breakEven),top+plotH);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle="#bff979";ctx.beginPath();ctx.arc(x(breakEven),y(0),5,0,Math.PI*2);ctx.fill()}
+}
+function render(){
+ const marginEach=p.partnerSurplus*(p.ourSell*(1-(p.storageShare/100)*(1-p.efficiency/100))-p.ourBuy);
+ const partnerDelta=p.partnerSurplus*(p.ourBuy-p.cezBuy);
+ const capex=stage.battery*stage.priceBattery+stage.solar*stage.priceSolar+stage.pricePrep;
+ const bess=stage.battery*p.bessIncome,solar=stage.solar*p.solarIncome;
+ const partnerMargin=marginEach*stage.partners;
+ const annual=bess+solar+partnerMargin;
+ const profit=annual>0?capex/annual:Infinity;
+ $("cezBuyCell").textContent=dec(p.cezBuy)+" Kč";
+ $("ourBuyCell").textContent=dec(p.ourBuy)+" Kč";
+ $("cezSellCell").textContent=dec(p.cezSell,3)+" Kč";
+ $("ourSellCell").textContent=dec(p.ourSell)+" Kč";
+ $("spreadCell").textContent=dec(p.ourSell-p.ourBuy)+" Kč/kWh";
+ const isBetter=p.ourBuy>p.cezBuy && p.ourSell<p.cezSell && p.ourSell>p.ourBuy;
+ $("priceAdvantage").classList.toggle("warning",!isBetter);
+ $("priceAdvantage").textContent="Partner získá "+dec(p.ourBuy-p.cezBuy)+" Kč/kWh navíc oproti srovnávací ceně ČEZ; zákazník zaplatí "+dec(p.cezSell-p.ourSell,3)+" Kč/kWh méně. "+(isBetter?"Naše předpokládané ceny jsou výhodnější pro obě strany.":"Pozor: změněné ceny nemusí být výhodnější pro obě strany nebo nemusí zaručit kladnou marži.");
+ $("partnerCezRevenue").textContent=money(p.partnerSurplus*p.cezBuy);
+ $("partnerOurRevenue").textContent=money(p.partnerSurplus*p.ourBuy);
+ $("partnerGain").textContent=signed(partnerDelta);
+ $("ourPartnerMargin").textContent=signed(partnerMargin);
+ $("ourPartnerMargin").style.color=partnerMargin<0?"#ff8f7f":"#bff979";
+ $("roiNumber").textContent=Number.isFinite(profit)?dec(profit,1)+" roku":"Bez návratnosti";
+ $("roiBreakdown").textContent="Investice: "+money(capex)+" · Roční přínos BESS: "+money(bess)+" · Vlastní FVE: "+money(solar)+" · Marže z "+stage.partners+" partnerů: "+signed(partnerMargin)+" · Celkový roční přínos: "+signed(annual);
+ $("roiNotice").classList.toggle("warning",stage.partners>0&&partnerMargin<0);
+ $("roiNotice").textContent=stage.partners===0?"Změna výkupní či prodejní ceny se projeví až při přidání aspoň jednoho partnera (+) v etapě 03.":partnerMargin<0?"Pozor: při současné ceně a uvažovaných ztrátách je partnerský obchod v záporné marži a prodlužuje návratnost.":"Při zvolených "+stage.partners+" partnerech se každá změna naší výkupní nebo prodejní ceny ihned projeví v grafu návratnosti.";
+ try{localStorage.setItem("babka-energy-prices-v1",JSON.stringify(p))}catch(e){}
+ chart(capex,annual);
+}
+render();
+})();
+</script></body>
 </html>
