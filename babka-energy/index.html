@@ -83,27 +83,27 @@ html{scroll-padding-top:90px}.hero{position:relative;isolation:isolate}.hero .he
 
 <section id="ceny" class="container pricingSection">
   <div class="eyebrow">Energetika / nákup a prodej</div>
-  <h2 class="pricingTitle">Výhodněji než ČEZ – pro obě strany.</h2>
+  <h2 class="pricingTitle">Výhodněji než tržní výkup – pro obě strany.</h2>
   <p class="pricingLead">Babka Bor Energy chce nabídnout partnerům vyšší cenu za přebytky a odběratelům nižší obchodní cenu. Naše ceny můžete měnit a hned uvidíte dopad na výnos partnera, naši obchodní marži a návratnost investice.</p>
   <div class="pricingGrid">
     <div class="pricingPanel">
       <h3>ČEZ vs. Babka Bor Energy</h3>
-      <table class="priceTable"><thead><tr><th>Za 1 kWh elektřiny</th><th>ČEZ – zveřejněný model</th><th>Naše modelová cena</th></tr></thead>
+      <table class="priceTable"><thead><tr><th>Za 1 kWh elektřiny</th><th>ČEZ – tržní příklad*</th><th>Naše modelová cena</th></tr></thead>
         <tbody>
-          <tr><td>Odměna výrobci za přebytek<small>ČEZ: hodnota zápočtu za přetoky u produktu pro domácnosti – není automaticky hotovostní výkup.</small></td><td id="cezBuyCell">2,78 Kč</td><td id="ourBuyCell">2,95 Kč</td></tr>
+          <tr><td>Tržní výkup FVE<small>ČEZ 2026: spot OTE − 0,35 Kč/kWh, příklad při spotu 1,00 Kč/kWh.</small></td><td id="cezBuyCell">0,65 Kč</td><td id="ourBuyCell">1,20 Kč</td></tr><tr><td>Zvláštní zápočet ČEZ pro soláry<small>2,78 Kč/kWh lze započítat proti spotřebě, nejde o běžnou výkupní cenu.</small></td><td>2,78 Kč/kWh</td><td>jiný produkt</td></tr>
           <tr><td>Cena dodávky elektřiny<small>ČEZ: obchodní složka ceny produktu Elektřina pro soláry, bez distribuce.</small></td><td id="cezSellCell">3,297 Kč</td><td id="ourSellCell">3,19 Kč</td></tr>
           <tr><td>Rozdíl kupní a prodejní ceny<small>Naše hrubá marže před ztrátami a náklady.</small></td><td>–</td><td id="spreadCell">0,24 Kč/kWh</td></tr>
         </tbody>
       </table>
-      <div class="compareMessage" id="priceAdvantage">Partner u nás získá o 0,17 Kč/kWh více a zákazník zaplatí o 0,107 Kč/kWh méně než srovnávací ceny ČEZ.</div>
-      <p class="finePrint">Srovnání ČEZ slouží pouze jako orientační benchmark dvou různých veřejných produktových údajů, ne jako právně či obchodně totožné nabídky. Zdroje: <a href="https://www.cez.cz/nextcez/cs/pro-media/tiskove-zpravy/s-fotovoltaikou-jeste-vyhodneji.-cez-prodej-zlevnuje-elektrinu-domacnostem-se-solary-234459" target="_blank" rel="noopener noreferrer">ČEZ Prodej, 19. 5. 2026</a>.</p>
+      <div class="compareMessage" id="priceAdvantage">Při modelové spotové ceně 1,00 Kč/kWh může náš partner za přebytky získat o 0,55 Kč/kWh více než v uvedeném tržním výkupu ČEZ; speciální zápočet ČEZ může být výhodnější.</div>
+      <p class="finePrint">* ČEZ tržní výkup se v roce 2026 stanovuje podle spotové ceny OTE minus 350 Kč/MWh; 0,65 Kč/kWh je jen scénář při spotu 1 Kč/kWh. Zdroj: <a href="https://www.cez.cz/cs/pro-vyrobce/cenik" target="_blank" rel="noopener noreferrer">ČEZ ceníky 2026</a>. Speciální zápočet 2,78 Kč/kWh je jiný produkt. Zdroje: <a href="https://www.cez.cz/nextcez/cs/pro-media/tiskove-zpravy/s-fotovoltaikou-jeste-vyhodneji.-cez-prodej-zlevnuje-elektrinu-domacnostem-se-solary-234459" target="_blank" rel="noopener noreferrer">ČEZ Prodej, 19. 5. 2026</a>.</p>
     </div>
     <div class="pricingPanel">
       <h3>Nastavte naše ceny</h3>
       <div class="priceControls">
-        <label class="priceControl">Naše výkupní cena (Kč/kWh)<input id="ownBuyInput" type="number" inputmode="decimal" min="0" step="0.01" value="2.95"></label>
+        <label class="priceControl">Naše výkupní cena (Kč/kWh)<input id="ownBuyInput" type="number" inputmode="decimal" min="0" step="0.01" value="1.20"></label>
         <label class="priceControl">Naše prodejní cena (Kč/kWh)<input id="ownSellInput" type="number" inputmode="decimal" min="0" step="0.01" value="3.19"></label>
-        <label class="priceControl">ČEZ – přetoky (Kč/kWh)<input id="cezBuyInput" type="number" inputmode="decimal" min="0" step="0.01" value="2.78"></label>
+        <label class="priceControl">ČEZ tržní – ilustrativně (Kč/kWh)<input id="cezBuyInput" type="number" inputmode="decimal" min="-5" step="0.05" value="0.65"></label>
         <label class="priceControl">ČEZ – obchodní cena (Kč/kWh)<input id="cezSellInput" type="number" inputmode="decimal" min="0" step="0.001" value="3.297"></label>
         <label class="priceControl">Přebytek na partnera (kWh/rok)<input id="partnerSurplusInput" type="number" inputmode="numeric" min="0" step="100" value="8000"></label>
         <label class="priceControl">Podíl energie přes baterii (%)<input id="storageShareInput" type="number" inputmode="numeric" min="0" max="100" step="5" value="50"></label>
@@ -120,9 +120,9 @@ html{scroll-padding-top:90px}.hero{position:relative;isolation:isolate}.hero .he
   <h2 class="pricingTitle">Kolik vydělá každý partner?</h2>
   <p class="pricingLead">Při stejném množství přebytků srovnáme příjem jednoho partnera. Přepočítává se automaticky podle jeho předpokládaného ročního objemu a naší výkupní ceny. Jde o tržbu za přebytek, nikoli čistý zisk celé FVE.</p>
   <div class="financeMetrics" aria-live="polite">
-    <div class="financeMetric"><small>1 partner / srovnání ČEZ</small><strong id="partnerCezRevenue">22 240 Kč</strong><span>modelová hodnota přetoků za rok</span></div>
-    <div class="financeMetric"><small>1 partner / výkup u nás</small><strong id="partnerOurRevenue">23 600 Kč</strong><span>modelová tržba partnera za rok</span></div>
-    <div class="financeMetric"><small>Rozdíl pro partnera za rok</small><strong id="partnerGain">+1 360 Kč</strong><span>vůči porovnávané ceně ČEZ</span></div>
+    <div class="financeMetric"><small>1 partner / tržní výkup ČEZ</small><strong id="partnerCezRevenue">5 200 Kč</strong><span>modelový tržní výkup ČEZ za rok</span></div>
+    <div class="financeMetric"><small>1 partner / výkup u nás</small><strong id="partnerOurRevenue">9 600 Kč</strong><span>modelová tržba partnera za rok</span></div>
+    <div class="financeMetric"><small>Rozdíl pro partnera za rok</small><strong id="partnerGain">+4 400 Kč</strong><span>vůči modelovému tržnímu výkupu ČEZ</span></div>
     <div class="financeMetric"><small>Naše marže od všech partnerů</small><strong id="ourPartnerMargin">0 Kč</strong><span>roční marže po modelové ztrátě energie, před ostatními náklady</span></div>
   </div>
   <p class="finePrint">V modelu počítáme pouze s přebytky, které lze smluvně koupit a následně prodat; 50 % přes baterii s účinností 90 % je výchozí odhad, který lze změnit. V praxi je třeba prověřit možnost obchodování, měření, distribuční poplatky, zúčtování odchylek, dostupnost energie ve stejném čase i dimenzování úložiště.</p>
@@ -133,7 +133,7 @@ html{scroll-padding-top:90px}.hero{position:relative;isolation:isolate}.hero .he
   <div class="returnGrid">
     <div class="pricingPanel">
       <h3>Modelová doba návratnosti</h3>
-      <div class="returnNumber" id="roiNumber">13,8 roku</div>
+      <div class="returnNumber" id="roiNumber">13,8 roku</div><p>Pro návratnost za 5 let potřebujeme čistý roční přínos <strong id="roiTargetFive">400 000 Kč</strong>. Proti modelu chybí <strong id="roiGapFive">255 000 Kč</strong> ročně.</p>
       <div class="returnBreakdown" id="roiBreakdown"></div>
       <div class="compareMessage" id="roiNotice">Při výchozím stavu bez partnerů se výkupní a prodejní cena na návratnosti neprojeví. Přidejte partnera (+) v etapě 03.</div>
       <p class="finePrint">Zjednodušená prostá návratnost: vstupní investice / modelový roční provozní přínos. Bez financování, daní, změn cen, mimořádných oprav a dalších kapitálových výdajů. Případné překrývání obchodních výnosů BESS s partnerským modelem musí být před realizací vyloučeno.</p>
@@ -197,21 +197,21 @@ render();
 <script>
 (function(){
 "use strict";
-const baseline={ourBuy:2.95,ourSell:3.19,cezBuy:2.78,cezSell:3.297,partnerSurplus:8000,storageShare:50,efficiency:90,bessIncome:145000,solarIncome:35000};
+const baseline={ourBuy:1.20,ourSell:3.19,cezBuy:0.65,cezSell:3.297,partnerSurplus:8000,storageShare:50,efficiency:90,bessIncome:145000,solarIncome:35000};
 const ids={ourBuy:"ownBuyInput",ourSell:"ownSellInput",cezBuy:"cezBuyInput",cezSell:"cezSellInput",partnerSurplus:"partnerSurplusInput",storageShare:"storageShareInput",efficiency:"efficiencyInput",bessIncome:"bessIncomeInput",solarIncome:"solarIncomeInput"};
 const money=v=>Math.round(v).toLocaleString("cs-CZ")+" Kč";
 const signed=v=>(v>=0?"+":"−")+money(Math.abs(v));
 const dec=(v,n=2)=>v.toLocaleString("cs-CZ",{minimumFractionDigits:n,maximumFractionDigits:n});
 const readData=()=>{try{return JSON.parse(localStorage.getItem("babka-energy-v1")||"null")||{};}catch(e){return {}};};
 const existing=readData();let stage={battery:existing.battery||1,solar:existing.solar||0,partners:existing.partners||0,priceBattery:existing.priceBattery||1700000,priceSolar:existing.priceSolar||240000,pricePrep:existing.pricePrep??300000};
-let p={...baseline};try{let x=JSON.parse(localStorage.getItem("babka-energy-prices-v1")||"null");if(x&&typeof x==="object")for(let k of Object.keys(baseline))if(Number.isFinite(x[k]))p[k]=x[k];}catch(e){}
+let p={...baseline};try{let x=JSON.parse(localStorage.getItem("babka-energy-prices-v2")||"null");if(x&&typeof x==="object")for(let k of Object.keys(baseline))if(Number.isFinite(x[k]))p[k]=x[k];}catch(e){}
 const shared=new URLSearchParams(location.search);for(let key of Object.keys(baseline)){const v=shared.get("m_"+key);if(v!==null&&Number.isFinite(Number(v))&&Number(v)>=0)p[key]=Number(v);}
 window.babkaEnergyPricingSnapshot=()=>({...p});window.babkaEnergyResetPrices=()=>{p={...baseline};for(let [key,id] of Object.entries(ids))document.getElementById(id).value=p[key];render();};
 const $=id=>document.getElementById(id);
 for(let [key,id] of Object.entries(ids)){
  const el=$(id);el.value=p[key];
  el.addEventListener("input",function(){
-   let v=Number(this.value);if(!Number.isFinite(v)||v<0)return;
+   let v=Number(this.value);if(!Number.isFinite(v)||(key!=="cezBuy"&&v<0))return;
    if(key==="storageShare"||key==="efficiency")v=Math.max(key==="efficiency"?1:0,Math.min(100,v));
    p[key]=v;render();
  });
@@ -254,11 +254,11 @@ function render(){
  $("partnerGain").textContent=signed(partnerDelta);
  $("ourPartnerMargin").textContent=signed(partnerMargin);
  $("ourPartnerMargin").style.color=partnerMargin<0?"#ff8f7f":"#bff979";
- $("roiNumber").textContent=Number.isFinite(profit)?dec(profit,1)+" roku":"Bez návratnosti";
+ $("roiNumber").textContent=Number.isFinite(profit)?dec(profit,1)+" roku":"Bez návratnosti"; $("roiTargetFive").textContent=money(capex/5);$("roiGapFive").textContent=money(Math.max(0,capex/5-annual));
  $("roiBreakdown").textContent="Investice: "+money(capex)+" · Roční přínos BESS: "+money(bess)+" · Vlastní FVE: "+money(solar)+" · Marže z "+stage.partners+" partnerů: "+signed(partnerMargin)+" · Celkový roční přínos: "+signed(annual);
  $("roiNotice").classList.toggle("warning",stage.partners>0&&partnerMargin<0);
  $("roiNotice").textContent=stage.partners===0?"Změna výkupní či prodejní ceny se projeví až při přidání aspoň jednoho partnera (+) v etapě 03.":partnerMargin<0?"Pozor: při současné ceně a uvažovaných ztrátách je partnerský obchod v záporné marži a prodlužuje návratnost.":"Při zvolených "+stage.partners+" partnerech se každá změna naší výkupní nebo prodejní ceny ihned projeví v grafu návratnosti.";
- try{localStorage.setItem("babka-energy-prices-v1",JSON.stringify(p))}catch(e){}
+ try{localStorage.setItem("babka-energy-prices-v2",JSON.stringify(p))}catch(e){}
  chart(capex,annual);
 }
 render();
